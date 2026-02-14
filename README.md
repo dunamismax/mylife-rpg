@@ -1,6 +1,6 @@
 # MyLife RPG (Laravel + Livewire)
 
-This repository now uses a Laravel 12 + Livewire 4 application located in `mylife/`.
+This repository uses a Laravel 12 + Livewire 4 application at the repository root.
 
 ## Stack
 
@@ -23,7 +23,6 @@ This repository now uses a Laravel 12 + Livewire 4 application located in `mylif
 ## Run Locally
 
 ```bash
-cd mylife
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
@@ -37,6 +36,5 @@ Visit: `http://127.0.0.1:8000`
 ## Test
 
 ```bash
-cd mylife
 php artisan test --compact
 ```
