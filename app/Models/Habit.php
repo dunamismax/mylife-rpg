@@ -23,6 +23,7 @@ class Habit extends Model
         'hp_affected',
         'streak',
         'last_completed_at',
+        'xp_rewarded_on',
     ];
 
     /**
@@ -35,6 +36,7 @@ class Habit extends Model
             'hp_affected' => 'integer',
             'streak' => 'integer',
             'last_completed_at' => 'date',
+            'xp_rewarded_on' => 'date',
         ];
     }
 

@@ -81,3 +81,47 @@ test('marking a habit complete updates streak and xp', function () {
         CarbonImmutable::setTestNow();
     }
 });
+
+test('completing a quest multiple times does not award duplicate xp', function () {
+    $user = User::factory()->create();
+    $quest = Quest::factory()->create([
+        'user_id' => $user->id,
+        'xp_reward' => 40,
+        'completed' => false,
+    ]);
+
+    $this->actingAs($user);
+
+    Livewire::test(RpgDashboard::class)
+        ->call('toggleQuest', $quest->id)
+        ->call('toggleQuest', $quest->id)
+        ->call('toggleQuest', $quest->id);
+
+    expect($user->fresh()->stat->xp)->toBe(40)
+        ->and($quest->fresh()->xp_rewarded_at)->not->toBeNull();
+});
+
+test('marking a habit multiple times in one day does not award duplicate xp', function () {
+    CarbonImmutable::setTestNow('2026-02-14 09:00:00');
+    try {
+        $user = User::factory()->create();
+        $habit = Habit::factory()->create([
+            'user_id' => $user->id,
+            'xp_reward' => 25,
+            'streak' => 0,
+            'last_completed_at' => null,
+        ]);
+
+        $this->actingAs($user);
+
+        Livewire::test(RpgDashboard::class)
+            ->call('toggleHabit', $habit->id)
+            ->call('toggleHabit', $habit->id)
+            ->call('toggleHabit', $habit->id);
+
+        expect($user->fresh()->stat->xp)->toBe(25)
+            ->and($habit->fresh()->xp_rewarded_on?->toDateString())->toBe('2026-02-14');
+    } finally {
+        CarbonImmutable::setTestNow();
+    }
+});
