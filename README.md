@@ -1,51 +1,42 @@
-# MyLife RPG
+# MyLife RPG (Laravel + Livewire)
 
-MyLife RPG is a gamified habit tracker that helps you build good habits, break bad ones, and achieve your goals. Level up your life, one quest at a time.
+This repository now uses a Laravel 12 + Livewire 4 application located in `mylife/`.
 
-This project is a vanilla web application built with Node.js, Express, and a plain HTML/CSS/JavaScript frontend. It uses a MySQL database with Prisma as the ORM.
+## Stack
 
-## Technology Stack
+- PHP 8.4
+- Laravel 12
+- Livewire 4
+- Flux UI (Livewire Flux)
+- SQLite (default local), works with MySQL/PostgreSQL via `.env`
 
--   **Backend:** Node.js, Express
--   **Database:** MySQL, Prisma
--   **Authentication:** JSON Web Tokens (JWT)
--   **Frontend:** HTML, CSS, JavaScript (vanilla)
+## Features
 
-## Getting Started
+- Fortify-based authentication (register/login/logout/password reset/verification/2FA)
+- RPG dashboard with:
+  - Character stats (level, XP, HP, core attributes)
+  - Quest tracking and completion
+  - Habit tracking with streaks
+  - Achievement unlocking
+  - Active status effects display
 
-### Prerequisites
+## Run Locally
 
--   Node.js
--   MySQL
+```bash
+cd mylife
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+npm install
+npm run dev
+php artisan serve
+```
 
-### Installation
+Visit: `http://127.0.0.1:8000`
 
-1.  Clone the repository:
-    ```sh
-    git clone https://github.com/your-username/mylife-rpg.git
-    cd mylife-rpg
-    ```
+## Test
 
-2.  Install the dependencies:
-    ```sh
-    npm install
-    ```
-
-3.  Set up the environment variables. Create a `.env` file in the root of the project and add the following variables:
-    ```
-    DATABASE_URL="mysql://user:password@host:port/database"
-    JWT_SECRET="your_jwt_secret"
-    ```
-    Replace the values with your MySQL connection string and a secret for signing JWTs.
-
-4.  Apply the database schema:
-    ```sh
-    npx prisma db push
-    ```
-
-5.  Start the server:
-    ```sh
-    npm start
-    ```
-
-The application will be available at `http://localhost:3000`.
+```bash
+cd mylife
+php artisan test --compact
+```
