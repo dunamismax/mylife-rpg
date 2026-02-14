@@ -69,13 +69,20 @@ class RpgDashboard extends Component
     {
         $quest = Auth::user()->quests()->findOrFail($questId);
         $completingQuest = ! $quest->completed;
+        $awardingXp = $completingQuest && $quest->xp_rewarded_at === null;
 
-        $quest->update([
+        $updates = [
             'completed' => $completingQuest,
             'completed_at' => $completingQuest ? now() : null,
-        ]);
+        ];
 
-        if ($completingQuest) {
+        if ($awardingXp) {
+            $updates['xp_rewarded_at'] = now();
+        }
+
+        $quest->update($updates);
+
+        if ($awardingXp) {
             $this->applyProgress($quest->xp_reward, $quest->hp_affected, $quest->stats_affected);
             $this->checkAchievements();
         }
@@ -103,13 +110,17 @@ class RpgDashboard extends Component
             $newStreak = $habit->streak + 1;
         }
 
+        $awardingXp = ! $habit->xp_rewarded_on?->equalTo($today);
+
         $habit->update([
             'last_completed_at' => $today,
             'streak' => $newStreak,
-        ]);
+        ] + ($awardingXp ? ['xp_rewarded_on' => $today] : []));
 
-        $this->applyProgress($habit->xp_reward ?? 0, $habit->hp_affected, $habit->stats_affected);
-        $this->checkAchievements();
+        if ($awardingXp) {
+            $this->applyProgress($habit->xp_reward ?? 0, $habit->hp_affected, $habit->stats_affected);
+            $this->checkAchievements();
+        }
     }
 
     public function render(): View

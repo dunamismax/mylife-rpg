@@ -27,6 +27,7 @@ class Quest extends Model
         'is_recurring',
         'recurrence_pattern',
         'completed_at',
+        'xp_rewarded_at',
     ];
 
     /**
@@ -41,6 +42,7 @@ class Quest extends Model
             'is_recurring' => 'boolean',
             'due_date' => 'datetime',
             'completed_at' => 'datetime',
+            'xp_rewarded_at' => 'datetime',
         ];
     }
 
