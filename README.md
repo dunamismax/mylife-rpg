@@ -10,6 +10,10 @@
 
 MyLife RPG is a productivity game for people who want habit tracking to feel like character progression. You create quests and habits, complete them daily, gain XP, level up stats, and unlock achievements.
 
+## App Screenshot
+
+[![MyLife RPG app screenshot](public/myliferpg-screenshot-v1.png)](public/myliferpg-screenshot-v1.png)
+
 ## Trust Signals
 
 ![PHP](https://img.shields.io/badge/PHP-8.4%2B-777BB4?logo=php&logoColor=white)
