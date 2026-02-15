@@ -34,6 +34,40 @@ test('users can create quests from the dashboard component', function () {
     ]);
 });
 
+test('quest creation rejects unsupported quest types', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    Livewire::test(RpgDashboard::class)
+        ->set('questTitle', 'Invalid Quest Type')
+        ->set('questType', 'monthly')
+        ->set('questXpReward', 25)
+        ->call('createQuest')
+        ->assertHasErrors(['questType' => ['in']]);
+
+    $this->assertDatabaseMissing('quests', [
+        'user_id' => $user->id,
+        'title' => 'Invalid Quest Type',
+    ]);
+});
+
+test('habit creation rejects unsupported habit types', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    Livewire::test(RpgDashboard::class)
+        ->set('habitTitle', 'Invalid Habit Type')
+        ->set('habitType', 'neutral')
+        ->set('habitXpReward', 10)
+        ->call('createHabit')
+        ->assertHasErrors(['habitType' => ['in']]);
+
+    $this->assertDatabaseMissing('habits', [
+        'user_id' => $user->id,
+        'title' => 'Invalid Habit Type',
+    ]);
+});
+
 test('completing a quest marks it complete and awards xp', function () {
     $user = User::factory()->create();
     $quest = Quest::factory()->create([

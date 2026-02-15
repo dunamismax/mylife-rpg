@@ -19,7 +19,7 @@
             <flux:heading size="lg">{{ __('Achievements') }}</flux:heading>
             <div class="mt-4 space-y-2">
                 @forelse ($achievements as $achievement)
-                    <div class="rounded-lg border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
+                    <div wire:key="achievement-{{ $achievement->id }}" class="rounded-lg border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
                         <div class="flex items-center justify-between gap-2">
                             <flux:text class="font-semibold">{{ $achievement->name }}</flux:text>
                             <flux:badge :color="$achievement->unlocked ? 'green' : 'red'">
@@ -40,7 +40,7 @@
             <flux:heading size="lg">{{ __('Active Status Effects') }}</flux:heading>
             <div class="mt-4 space-y-2">
                 @forelse ($statusEffects as $effect)
-                    <div class="rounded-lg border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
+                    <div wire:key="status-effect-{{ $effect->id }}" class="rounded-lg border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
                         <flux:text class="font-semibold">{{ $effect->name }}</flux:text>
                         @if ($effect->penalty)
                             <flux:text class="text-sm">{{ $effect->penalty }}</flux:text>
@@ -61,7 +61,7 @@
 
             <div class="space-y-2">
                 @forelse ($quests as $quest)
-                    <div class="flex items-center justify-between gap-2 rounded-lg border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
+                    <div wire:key="quest-{{ $quest->id }}" class="flex items-center justify-between gap-2 rounded-lg border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
                         <div>
                             <flux:text class="{{ $quest->completed ? 'line-through' : '' }}">{{ $quest->title }}</flux:text>
                             <flux:text class="text-xs text-zinc-500 dark:text-zinc-400">
@@ -72,6 +72,8 @@
                             size="sm"
                             :variant="$quest->completed ? 'ghost' : 'primary'"
                             wire:click="toggleQuest({{ $quest->id }})"
+                            wire:loading.attr="disabled"
+                            wire:target="toggleQuest({{ $quest->id }})"
                         >
                             {{ $quest->completed ? __('Undo') : __('Complete') }}
                         </flux:button>
@@ -86,20 +88,20 @@
                 @error('questTitle') <flux:text class="!text-red-600">{{ $message }}</flux:text> @enderror
 
                 <div class="grid gap-3 sm:grid-cols-2">
-                    <div class="grid gap-2">
-                        <label class="text-sm font-medium text-zinc-700 dark:text-zinc-300">{{ __('Type') }}</label>
-                        <select wire:model="questType" class="rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900">
-                            <option value="daily">Daily</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="major">Major</option>
-                        </select>
-                    </div>
+                    <flux:select wire:model="questType" :label="__('Type')" :invalid="$errors->has('questType')" required>
+                        <flux:select.option value="daily">{{ __('Daily') }}</flux:select.option>
+                        <flux:select.option value="weekly">{{ __('Weekly') }}</flux:select.option>
+                        <flux:select.option value="major">{{ __('Major') }}</flux:select.option>
+                    </flux:select>
                     <flux:input wire:model="questXpReward" :label="__('XP reward')" type="number" min="1" required />
                 </div>
                 @error('questType') <flux:text class="!text-red-600">{{ $message }}</flux:text> @enderror
                 @error('questXpReward') <flux:text class="!text-red-600">{{ $message }}</flux:text> @enderror
 
-                <flux:button variant="primary" type="submit">{{ __('Add Quest') }}</flux:button>
+                <flux:button variant="primary" type="submit" wire:loading.attr="disabled" wire:target="createQuest">
+                    <span wire:loading.remove wire:target="createQuest">{{ __('Add Quest') }}</span>
+                    <span wire:loading wire:target="createQuest">{{ __('Adding...') }}</span>
+                </flux:button>
             </form>
         </section>
 
@@ -110,7 +112,7 @@
 
             <div class="space-y-2">
                 @forelse ($habits as $habit)
-                    <div class="flex items-center justify-between gap-2 rounded-lg border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
+                    <div wire:key="habit-{{ $habit->id }}" class="flex items-center justify-between gap-2 rounded-lg border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-800">
                         <div>
                             <flux:text>{{ $habit->title }}</flux:text>
                             <flux:text class="text-xs text-zinc-500 dark:text-zinc-400">
@@ -121,6 +123,8 @@
                             size="sm"
                             :variant="$habit->last_completed_at && $habit->last_completed_at->isToday() ? 'ghost' : 'primary'"
                             wire:click="toggleHabit({{ $habit->id }})"
+                            wire:loading.attr="disabled"
+                            wire:target="toggleHabit({{ $habit->id }})"
                         >
                             {{ $habit->last_completed_at && $habit->last_completed_at->isToday() ? __('Undo') : __('Mark Today') }}
                         </flux:button>
@@ -135,19 +139,19 @@
                 @error('habitTitle') <flux:text class="!text-red-600">{{ $message }}</flux:text> @enderror
 
                 <div class="grid gap-3 sm:grid-cols-2">
-                    <div class="grid gap-2">
-                        <label class="text-sm font-medium text-zinc-700 dark:text-zinc-300">{{ __('Type') }}</label>
-                        <select wire:model="habitType" class="rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900">
-                            <option value="good">Good</option>
-                            <option value="bad">Bad</option>
-                        </select>
-                    </div>
+                    <flux:select wire:model="habitType" :label="__('Type')" :invalid="$errors->has('habitType')" required>
+                        <flux:select.option value="good">{{ __('Good') }}</flux:select.option>
+                        <flux:select.option value="bad">{{ __('Bad') }}</flux:select.option>
+                    </flux:select>
                     <flux:input wire:model="habitXpReward" :label="__('XP reward')" type="number" min="0" required />
                 </div>
                 @error('habitType') <flux:text class="!text-red-600">{{ $message }}</flux:text> @enderror
                 @error('habitXpReward') <flux:text class="!text-red-600">{{ $message }}</flux:text> @enderror
 
-                <flux:button variant="primary" type="submit">{{ __('Add Habit') }}</flux:button>
+                <flux:button variant="primary" type="submit" wire:loading.attr="disabled" wire:target="createHabit">
+                    <span wire:loading.remove wire:target="createHabit">{{ __('Add Habit') }}</span>
+                    <span wire:loading wire:target="createHabit">{{ __('Adding...') }}</span>
+                </flux:button>
             </form>
         </section>
     </div>

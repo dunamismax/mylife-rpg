@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('dashboard', RpgDashboard::class)
+Route::livewire('dashboard', RpgDashboard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 

@@ -71,6 +71,7 @@ Default seeded login: `test@example.com` / `password`
 |---|---|---|
 | Backend | [Laravel 12](https://laravel.com/docs/12.x) | Application framework, routing, auth middleware, Eloquent |
 | Reactive UI | [Livewire 4](https://livewire.laravel.com/) | Server-driven reactive components |
+| Client Interactivity | [Alpine.js](https://alpinejs.dev/) | Lightweight client-side state for toggles, modals, and transitions inside Livewire views |
 | UI Components | [Flux UI Free](https://fluxui.dev/) | Shared UI primitives for forms, buttons, badges, layout |
 | Authentication | [Laravel Fortify](https://laravel.com/docs/12.x/fortify) | Headless authentication and 2FA backend |
 | Styling/Build | [Tailwind CSS 4](https://tailwindcss.com/) + [Vite 7](https://vite.dev/) | Styles and frontend asset bundling |
