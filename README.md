@@ -182,6 +182,7 @@ This repository does not ship a platform-specific deployment manifest (no commit
 |---|---|
 | [AGENTS.md](AGENTS.md) | Repo-specific engineering and tooling guidance |
 | [roadmap.md](roadmap.md) | Product roadmap, priorities, delivery phases, and maintenance checklist |
+| [deployment.md](deployment.md) | Step-by-step Ubuntu self-hosting guide with Caddy reverse proxy |
 | [routes/web.php](routes/web.php) | Main web routes and dashboard entrypoint |
 | [routes/settings.php](routes/settings.php) | Settings routes and middleware rules |
 | [app/Livewire/RpgDashboard.php](app/Livewire/RpgDashboard.php) | Core gameplay logic |
