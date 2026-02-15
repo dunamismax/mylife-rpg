@@ -41,7 +41,7 @@ cp .env.example .env
 composer install
 npm install
 php artisan key:generate
-php artisan migrate
+php artisan migrate --seed
 composer dev
 ```
 
@@ -51,13 +51,7 @@ Expected result:
 - Health check responds at `http://localhost:8000/up`
 - Home page shows the MyLife RPG landing screen
 
-Optional local seed user:
-
-```bash
-php artisan db:seed
-```
-
-Default seeded login: `test@example.com` / `password`
+Default local login after setup: `test@example.com` / `password`
 
 ## Features
 
@@ -94,7 +88,7 @@ mylife-rpg/
 ├── database/
 │   ├── migrations/                    # Auth + RPG schema
 │   ├── factories/                     # Model factories for tests/seeding
-│   └── seeders/DatabaseSeeder.php     # Optional local seed data
+│   └── seeders/DatabaseSeeder.php     # Default local seed data
 ├── resources/
 │   ├── views/livewire/                # Dashboard UI
 │   ├── views/pages/                   # Auth/settings pages
@@ -119,7 +113,7 @@ composer install
 npm install
 cp .env.example .env
 php artisan key:generate
-php artisan migrate
+php artisan migrate --seed
 ```
 
 ### Run

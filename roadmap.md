@@ -69,6 +69,7 @@ Implemented:
 - Expanded quest fields (difficulty, due date, richer details)
 - Dashboard metrics upgrades
 - Improved dashboard and landing UX
+- Reliable local seeded login account (`test@example.com` / `password`) for onboarding and manual QA
 
 In progress:
 
