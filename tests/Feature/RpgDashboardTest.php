@@ -34,6 +34,36 @@ test('users can create quests from the dashboard component', function () {
     ]);
 });
 
+test('users can create quests with difficulty and due date', function () {
+    CarbonImmutable::setTestNow('2026-02-15 09:00:00');
+    try {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Livewire::test(RpgDashboard::class)
+            ->set('questTitle', 'Ship MVP')
+            ->set('questDescription', 'Publish first production release')
+            ->set('questType', 'major')
+            ->set('questDifficulty', 'hard')
+            ->set('questDueDate', '2026-02-20')
+            ->set('questXpReward', 250)
+            ->call('createQuest')
+            ->assertHasNoErrors();
+
+        /** @var Quest $quest */
+        $quest = Quest::query()
+            ->where('user_id', $user->id)
+            ->where('title', 'Ship MVP')
+            ->firstOrFail();
+
+        expect($quest->difficulty)->toBe('hard')
+            ->and($quest->due_date?->toDateString())->toBe('2026-02-20')
+            ->and($quest->description)->toBe('Publish first production release');
+    } finally {
+        CarbonImmutable::setTestNow();
+    }
+});
+
 test('quest creation rejects unsupported quest types', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
@@ -116,6 +146,34 @@ test('marking a habit complete updates streak and xp', function () {
     }
 });
 
+test('users can save a daily check-in from the dashboard', function () {
+    CarbonImmutable::setTestNow('2026-02-15 08:00:00');
+    try {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Livewire::test(RpgDashboard::class)
+            ->set('dailyIntention', 'No nicotine today')
+            ->set('ifThenPlan', 'If I feel an urge, I will drink water and walk for 5 minutes.')
+            ->set('dailyCravingIntensity', '6')
+            ->set('dailyTriggerNotes', 'Stressful meeting at 3pm')
+            ->set('dailyReflection', 'Handled the evening trigger and stayed on plan.')
+            ->set('dailySlipHappened', false)
+            ->call('saveDailyCheckIn')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseHas('daily_check_ins', [
+            'user_id' => $user->id,
+            'check_in_date' => '2026-02-15 00:00:00',
+            'daily_intention' => 'No nicotine today',
+            'craving_intensity' => 6,
+            'slip_happened' => 0,
+        ]);
+    } finally {
+        CarbonImmutable::setTestNow();
+    }
+});
+
 test('completing a quest multiple times does not award duplicate xp', function () {
     $user = User::factory()->create();
     $quest = Quest::factory()->create([
@@ -155,6 +213,44 @@ test('marking a habit multiple times in one day does not award duplicate xp', fu
 
         expect($user->fresh()->stat->xp)->toBe(25)
             ->and($habit->fresh()->xp_rewarded_on?->toDateString())->toBe('2026-02-14');
+    } finally {
+        CarbonImmutable::setTestNow();
+    }
+});
+
+test('logging a bad-habit slip applies a recovery penalty and check-in flag', function () {
+    CarbonImmutable::setTestNow('2026-02-15 12:00:00');
+    try {
+        $user = User::factory()->create();
+        $habit = Habit::factory()->create([
+            'user_id' => $user->id,
+            'type' => 'bad',
+            'streak' => 5,
+            'last_completed_at' => '2026-02-14',
+        ]);
+
+        $this->actingAs($user);
+
+        Livewire::test(RpgDashboard::class)
+            ->call('logHabitSlip', $habit->id)
+            ->assertHasNoErrors();
+
+        expect($habit->fresh()->streak)->toBe(0)
+            ->and($habit->fresh()->last_completed_at)->toBeNull()
+            ->and($user->fresh()->stat->hp)->toBe(98)
+            ->and($user->fresh()->stat->willpower)->toBe(9);
+
+        $this->assertDatabaseHas('status_effects', [
+            'user_id' => $user->id,
+            'name' => 'Temptation Hangover',
+            'is_active' => 1,
+        ]);
+
+        $this->assertDatabaseHas('daily_check_ins', [
+            'user_id' => $user->id,
+            'check_in_date' => '2026-02-15 00:00:00',
+            'slip_happened' => 1,
+        ]);
     } finally {
         CarbonImmutable::setTestNow();
     }

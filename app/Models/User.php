@@ -97,4 +97,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(StatusEffect::class);
     }
+
+    public function dailyCheckIns(): HasMany
+    {
+        return $this->hasMany(DailyCheckIn::class);
+    }
 }

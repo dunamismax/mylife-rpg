@@ -54,6 +54,15 @@ This project has domain-specific skills available. You MUST activate the relevan
 ## Documentation Files
 
 - You must only create documentation files if explicitly requested by the user.
+- `AGENTS.md`, `roadmap`, and `README.md` are living documents and must stay current as development progresses.
+- Whenever a feature ships, update documentation in the same task:
+  - Mark the feature as implemented in `roadmap`.
+  - Update `README.md` feature/functionality sections to reflect current behavior.
+  - Update `AGENTS.md` only when agent workflow, rules, or project conventions change.
+- Prefer maintenance-friendly documentation formats:
+  - Keep status lists explicit (`Implemented`, `In Progress`, `Planned`).
+  - Include concrete dates in updated sections.
+  - Keep an execution queue that is reordered as priorities change.
 
 ## Replies
 
@@ -108,7 +117,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 ## Constructors
 
 - Use PHP 8 constructor property promotion in `__construct()`.
-    - `public function __construct(public GitHub $github) { }`
+  - `public function __construct(public GitHub $github) { }`
 - Do not allow empty `__construct()` methods with zero parameters unless the constructor is private.
 
 ## Type Declarations
