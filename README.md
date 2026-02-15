@@ -187,6 +187,7 @@ This repository does not ship a platform-specific deployment manifest (no commit
 | Path | Purpose |
 |---|---|
 | [AGENTS.md](AGENTS.md) | Repo-specific engineering and tooling guidance |
+| [roadmap.md](roadmap.md) | Product roadmap, priorities, delivery phases, and maintenance checklist |
 | [routes/web.php](routes/web.php) | Main web routes and dashboard entrypoint |
 | [routes/settings.php](routes/settings.php) | Settings routes and middleware rules |
 | [app/Livewire/RpgDashboard.php](app/Livewire/RpgDashboard.php) | Core gameplay logic |

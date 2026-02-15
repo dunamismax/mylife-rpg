@@ -1,29 +1,42 @@
 # MyLife RPG Product Roadmap
+
 Last updated: February 15, 2026
 Domain target: `myliferpg.app`
 
 ## 0) Living Document Rules (Mandatory For AI Agents And Contributors)
+
 This file, `README.md`, and `AGENTS.md` are living documents.
 
 Required on every shipped feature, behavior change, or roadmap reprioritization:
+
 1. Update this file:
+
 - Move items between `Implemented`, `In Progress`, and `Planned`.
 - Update `Last updated` with the real date.
 - Update `Immediate Execution Queue` to reflect current priorities.
+
 2. Update `README.md`:
+
 - Keep product capabilities, setup notes, and current feature list aligned with reality.
+
 3. Update `AGENTS.md` when process/rules/conventions changed:
+
 - Keep agent instructions aligned with current development workflow.
+
 4. Never leave stale statuses:
+
 - If a feature is shipped, mark it as implemented in this roadmap in the same task.
 
 Status legend used in this document:
+
 - `Implemented`: live in codebase and validated.
 - `In Progress`: partially delivered or active branch effort.
 - `Planned`: not started.
 
 ## 1) Product Vision
+
 Build the most effective and most engaging RPG habit and bad-habit recovery platform by combining:
+
 - Evidence-backed behavior change methods
 - High-retention game loops
 - Low-friction daily use
@@ -31,12 +44,14 @@ Build the most effective and most engaging RPG habit and bad-habit recovery plat
 - Strong social accountability
 
 The ideal end state is a product that helps users:
+
 - Build durable good habits
 - Quit or reduce harmful habits
 - Recover quickly after slips
 - Stay engaged for months, not days
 
 ## 2) Product Principles
+
 1. Recovery over perfection: slips are expected and handled with immediate recovery pathways.
 2. Tiny actions win: optimize for "doable today" over perfect plans.
 3. Clarity over complexity: each screen should answer "what should I do next?"
@@ -46,7 +61,9 @@ The ideal end state is a product that helps users:
 7. Privacy and trust by default: clear controls, minimal data collection, transparent usage.
 
 ## 3) Current Implementation Status (Live)
+
 Implemented:
+
 - Daily check-ins (intention, if-then plan, craving intensity, triggers, reflection, slip flag)
 - Bad-habit slip logging with recovery penalty/status effect
 - Expanded quest fields (difficulty, due date, richer details)
@@ -54,9 +71,11 @@ Implemented:
 - Improved dashboard and landing UX
 
 In progress:
+
 - None currently tracked
 
 Planned (not yet implemented):
+
 - Social accountability systems
 - Adaptive coaching and guided programs
 - Deep relapse-prevention workflows
@@ -67,47 +86,51 @@ Planned (not yet implemented):
 - Trust/safety/compliance hardening for behavior-change at scale
 
 ## 4) External Research Signals To Product Decisions
+
 The following sources informed this roadmap. Product decisions are inferred from them, not copied.
 
 ### App/Product Patterns
+
 - Habitica task model and RPG loops (Habits/Dailies/To-Dos, quests, streak pressure/reward loops):
-  - https://habitica.fandom.com/wiki/Habits
-  - https://habitica.fandom.com/wiki/Dailies
-  - https://habitica.fandom.com/wiki/Quests
-  - https://habitica.fandom.com/wiki/Streaks
+  - <https://habitica.fandom.com/wiki/Habits>
+  - <https://habitica.fandom.com/wiki/Dailies>
+  - <https://habitica.fandom.com/wiki/Quests>
+  - <https://habitica.fandom.com/wiki/Streaks>
 - I Am Sober (daily accountability + milestones + community):
-  - https://iamsober.com/
+  - <https://iamsober.com/>
 - Smoke Free (craving logs, trigger analysis, missions, badges, clinics/chat support, lapse recovery):
-  - https://smokefreeapp.com/
-  - https://smokefreeapp.com/faq/
+  - <https://smokefreeapp.com/>
+  - <https://smokefreeapp.com/faq/>
 - quitSTART (tailored tips, badges, quit kit, trigger tagging, slip recovery):
-  - https://smokefree.nci.nih.gov/tools-tips/quitstart
+  - <https://smokefree.nci.nih.gov/tools-tips/quitstart>
 - Streaks (cross-device, negative habits, flexible schedules, auto-tracking via Health app):
-  - https://streaks.app/
-  - https://apps.apple.com/us/app/streaks/id963034692
+  - <https://streaks.app/>
+  - <https://apps.apple.com/us/app/streaks/id963034692>
 - Loop Habit Tracker (free/open-source baseline: reminders, charts, long-term consistency):
-  - https://loophabits.org/
+  - <https://loophabits.org/>
 - Fabulous/Finch pattern signals (guided journeys, progressive content, daily quests, reflection prompts):
-  - https://help.thefabulous.co/en/support/solutions/articles/101000427409-what-is-a-journey-
-  - https://help.finchcare.com/hc/en-us/articles/37943131828749-Daily-and-Special-Quests
+  - <https://help.thefabulous.co/en/support/solutions/articles/101000427409-what-is-a-journey->
+  - <https://help.finchcare.com/hc/en-us/articles/37943131828749-Daily-and-Special-Quests>
 
 ### Clinical/Behavior Evidence Signals
+
 - Digital habit-formation intervention patterns (self-monitoring, goals, prompts/cues, reinforcement):
-  - https://pubmed.ncbi.nlm.nih.gov/38787601/
-  - https://www.jmir.org/2024/1/e54375
+  - <https://pubmed.ncbi.nlm.nih.gov/38787601/>
+  - <https://www.jmir.org/2024/1/e54375>
 - Mobile app interventions and BCT patterns (self-monitoring, feedback, goal setting, action planning):
-  - https://pubmed.ncbi.nlm.nih.gov/40829125/
+  - <https://pubmed.ncbi.nlm.nih.gov/40829125/>
 - Gamification can produce small but meaningful improvements in behavior outcomes:
-  - https://pubmed.ncbi.nlm.nih.gov/39764571/
+  - <https://pubmed.ncbi.nlm.nih.gov/39764571/>
 - Smoking relapse prevention via chat-based support can improve validated abstinence:
-  - https://pubmed.ncbi.nlm.nih.gov/41557345/
+  - <https://pubmed.ncbi.nlm.nih.gov/41557345/>
 - Conversational cessation chatbot evidence and high-engagement patterns:
-  - https://pubmed.ncbi.nlm.nih.gov/38913882/
-  - https://www.fredhutch.org/en/news/releases/2024/01/fred-hutch-launches-free-ai-powered-chatbot-app-to-help-people-q.html
+  - <https://pubmed.ncbi.nlm.nih.gov/38913882/>
+  - <https://www.fredhutch.org/en/news/releases/2024/01/fred-hutch-launches-free-ai-powered-chatbot-app-to-help-people-q.html>
 - WHO tobacco cessation via chat toolkit (42-day quit challenge, localization, privacy guidance):
-  - https://www.who.int/westernpacific/publications/i/item/B09473
+  - <https://www.who.int/westernpacific/publications/i/item/B09473>
 
 Inference summary:
+
 - The highest-value core stack is self-monitoring + action planning + feedback + prompts + social/accountability + relapse recovery.
 - Gamification helps, but behavior design quality and engagement architecture matter more than decorative game elements.
 - Real-time or near-real-time support (chat/live) is critical around cravings and early relapse windows.
@@ -115,10 +138,13 @@ Inference summary:
 ## 5) Ideal Product Architecture (Capability Map)
 
 ### A. Daily Command Center
+
 Purpose:
+
 - Single screen for the user's "next best action" right now.
 
 Must include:
+
 - Daily oath/intention
 - Top 3 critical quests
 - Good habit checklist
@@ -128,10 +154,13 @@ Must include:
 - End-of-day review
 
 ### B. Habit and Anti-Habit Engine
+
 Purpose:
+
 - Handle both habit building and bad-habit quitting cleanly.
 
 Required capabilities:
+
 - Positive habits (build)
 - Negative habits (reduce/quit)
 - Scheduled habits (daily/weekly/custom)
@@ -146,10 +175,13 @@ Required capabilities:
   - Recovery streak (days since last slip)
 
 ### C. Craving and Trigger Intelligence
+
 Purpose:
+
 - Make urges actionable with immediate interventions.
 
 Required capabilities:
+
 - Urge log (time, location, emotion, context, intensity)
 - Trigger tags and trigger clusters
 - Trigger heatmap by:
@@ -166,10 +198,13 @@ Required capabilities:
 - "What worked" capture to build personal playbook
 
 ### D. Relapse Recovery System
+
 Purpose:
+
 - Convert lapses into learning and rapid recommitment.
 
 Required capabilities:
+
 - Distinguish lapse vs relapse episode
 - Non-shaming slip logging
 - Immediate recovery plan generation:
@@ -182,10 +217,13 @@ Required capabilities:
 - Optional "streak freeze token" mechanic to reduce all-or-nothing dropout
 
 ### E. RPG Meta-Game Layer
+
 Purpose:
+
 - Sustain long-term engagement with meaningful progression.
 
 Required capabilities:
+
 - Character classes (example: Warrior Discipline, Ranger Focus, Mage Insight)
 - Attribute system tied to behavior outcomes
 - Skill trees tied to real behavior consistency
@@ -205,10 +243,13 @@ Required capabilities:
   - Reset campaign for advanced users
 
 ### F. Guided Programs and Coaching
+
 Purpose:
+
 - Reduce user cognitive load with structured journeys.
 
 Required capabilities:
+
 - Goal-based programs:
   - Quit nicotine
   - Quit porn
@@ -227,10 +268,13 @@ Required capabilities:
   - Escalation boundaries for high-risk language
 
 ### G. Social and Accountability Layer
+
 Purpose:
+
 - Increase adherence through supportive social mechanics.
 
 Required capabilities:
+
 - Accountability buddy pairing
 - Small squads/parties (2-8 users)
 - Shared quests/challenges
@@ -245,10 +289,13 @@ Required capabilities:
   - Invite-only groups
 
 ### H. Health, Money, and Life Impact Tracking
+
 Purpose:
+
 - Make outcomes tangible and motivating.
 
 Required capabilities:
+
 - Money saved calculator by habit reduction
 - Health milestone timeline (condition-specific, clearly caveated)
 - Time reclaimed tracker
@@ -256,10 +303,13 @@ Required capabilities:
 - Milestone rewards and celebration flow
 
 ### I. Personalization and Adaptive Difficulty
+
 Purpose:
+
 - Avoid user burnout and boredom.
 
 Required capabilities:
+
 - Dynamic difficulty for quests based on completion history
 - Recommendation engine for next quests
 - Nudge timing personalization
@@ -270,10 +320,13 @@ Required capabilities:
   - Stable maintainer
 
 ### J. Reliability, Trust, and Privacy
+
 Purpose:
+
 - Earn and keep trust while scaling.
 
 Required capabilities:
+
 - Granular privacy controls
 - Clear data export and delete
 - Encryption at rest and in transit
@@ -284,6 +337,7 @@ Required capabilities:
 ## 6) Detailed Feature Backlog (Not Yet Implemented)
 
 ### Tier 1: Critical (highest impact, next 6-10 weeks)
+
 1. Trigger heatmap and craving analytics.
 2. Rescue toolkit with guided 3-5 minute interventions.
 3. Recovery plan wizard after slip.
@@ -294,6 +348,7 @@ Required capabilities:
 8. Consistency score (rolling) to reduce streak-only pressure.
 
 ### Tier 2: Major (next 2-4 months)
+
 1. AI coach with personalized coping suggestions.
 2. Program marketplace (goal packs and templates).
 3. Party raids / cooperative boss quests.
@@ -304,6 +359,7 @@ Required capabilities:
 8. Anti-burnout adaptive difficulty engine.
 
 ### Tier 3: Advanced (4-9 months)
+
 1. Advanced relapse forecasting model.
 2. Geofenced trigger alerts (opt-in).
 3. Wearable signal integration for stress-triggered nudges (opt-in).
@@ -315,24 +371,31 @@ Required capabilities:
 ## 7) 12-Month Delivery Roadmap
 
 ### Phase 0: Foundation Stabilization (Weeks 1-2)
+
 Goals:
+
 - Ensure current daily check-in and slip model are stable in production.
 
 Deliverables:
+
 - Data quality checks
 - Baseline dashboards
 - Error monitoring and alerting
 - UX polish pass for mobile responsiveness
 
 Exit criteria:
+
 - Crash-free sessions >= 99.5%
 - Daily check-in submit success >= 98%
 
 ### Phase 1: Relapse-Prevention Core (Weeks 3-8)
+
 Goals:
+
 - Build fast-response systems around cravings and slips.
 
 Deliverables:
+
 - Trigger logging v2
 - Craving intensity trends and heatmap
 - Rescue toolkit (timer, breathing, substitution, contact ally)
@@ -341,15 +404,19 @@ Deliverables:
 - Money saved tracker
 
 Exit criteria:
+
 - 7-day return rate +10% relative
 - Slip-to-recovery-plan completion >= 65%
 - Urge resolved without slip >= baseline +15%
 
 ### Phase 2: Guided Journeys + Social MVP (Weeks 9-16)
+
 Goals:
+
 - Increase mid-term adherence and accountability.
 
 Deliverables:
+
 - 42-day quit challenge
 - 14-day starter journeys
 - Buddy system
@@ -357,15 +424,19 @@ Deliverables:
 - Weekly reflection digest
 
 Exit criteria:
+
 - Day-30 retention +20% relative
 - Journey completion >= 35%
 - Buddy-linked users retain better than solo users by >= 12%
 
 ### Phase 3: Adaptive Intelligence + Seasons (Weeks 17-28)
+
 Goals:
+
 - Personalize interventions and deepen engagement loops.
 
 Deliverables:
+
 - Nudge timing personalization
 - Dynamic quest difficulty
 - Seasonal campaign model
@@ -373,15 +444,19 @@ Deliverables:
 - At-risk user rescue flows
 
 Exit criteria:
+
 - Day-60 retention +15% relative
 - 90-day consistency score improvement across active cohorts
 - AI coach satisfaction >= 4.3/5
 
 ### Phase 4: Scale, Trust, and Platform Expansion (Weeks 29-52)
+
 Goals:
+
 - Scale responsibly and improve defensibility.
 
 Deliverables:
+
 - Advanced moderation and safety controls
 - External integrations (wearables, provider content)
 - Cohort-level experimentation platform
@@ -389,6 +464,7 @@ Deliverables:
 - Growth loops and referral systems
 
 Exit criteria:
+
 - Sustained DAU/WAU growth with stable retention
 - Privacy incident count = 0
 - NPS improvement quarter over quarter
@@ -396,37 +472,49 @@ Exit criteria:
 ## 8) Data Model Roadmap
 
 ### New Tables Recommended
+
 1. `craving_events`
+
 - `id`, `user_id`, `habit_id`, `occurred_at`, `intensity`, `location_context`, `social_context`, `emotion_context`, `trigger_tags` (json), `resolved_without_slip` (bool), `intervention_used`, `notes`
 
-2. `recovery_plans`
+1. `recovery_plans`
+
 - `id`, `user_id`, `habit_id`, `slip_at`, `trigger_summary`, `if_then_patch`, `first_action`, `commitment_level`, `follow_up_at`, `completed_at`
 
-3. `challenge_programs`
+1. `challenge_programs`
+
 - `id`, `slug`, `name`, `duration_days`, `goal_type`, `is_active`
 
-4. `program_steps`
+1. `program_steps`
+
 - `id`, `program_id`, `day_number`, `lesson_text`, `action_text`, `reflection_prompt`, `difficulty`
 
-5. `user_program_enrollments`
+1. `user_program_enrollments`
+
 - `id`, `user_id`, `program_id`, `started_at`, `current_day`, `completed_at`, `status`
 
-6. `parties`
+1. `parties`
+
 - `id`, `name`, `owner_user_id`, `privacy`, `created_at`
 
-7. `party_members`
+1. `party_members`
+
 - `id`, `party_id`, `user_id`, `role`, `joined_at`, `status`
 
-8. `shared_quests`
+1. `shared_quests`
+
 - `id`, `party_id`, `title`, `description`, `target`, `progress`, `starts_at`, `ends_at`, `reward_payload` (json)
 
-9. `nudge_events`
+1. `nudge_events`
+
 - `id`, `user_id`, `nudge_type`, `sent_at`, `channel`, `context`, `opened_at`, `acted_at`
 
-10. `economy_transactions`
+1. `economy_transactions`
+
 - `id`, `user_id`, `txn_type`, `amount`, `currency_type`, `source`, `meta` (json), `created_at`
 
 ### Important Constraints
+
 - Unique daily check-in per user/day already implemented.
 - Add unique/partial indexes for all "one record per user/day" entities.
 - Add soft-delete strategy only where audit and restoration are needed.
@@ -434,12 +522,14 @@ Exit criteria:
 ## 9) Analytics and Experimentation Plan
 
 ### North Star Metrics
+
 1. 30-day active retention among new signups.
 2. 90-day consistency score among active users.
 3. Slip recovery speed (median hours from slip to recommit action).
 4. Bad-habit reduction metric (user-defined baseline vs current).
 
 ### Core Product Metrics
+
 - Daily check-in completion rate
 - Good habit completion rate
 - Bad-habit resist rate
@@ -450,6 +540,7 @@ Exit criteria:
 - Churn risk score distribution
 
 ### Event Taxonomy (minimum)
+
 - `check_in_saved`
 - `habit_marked`
 - `habit_slip_logged`
@@ -464,6 +555,7 @@ Exit criteria:
 - `shared_quest_completed`
 
 ### Experiment Framework
+
 - A/B test cadence: 1-2 tests per sprint max.
 - Test types:
   - Reminder timing
@@ -478,6 +570,7 @@ Exit criteria:
 ## 10) Notification Orchestration Roadmap
 
 ### Notification Types
+
 1. Commitment reminders (planned actions).
 2. Risk-window nudges (historical trigger windows).
 3. Recovery prompts (post-slip).
@@ -485,12 +578,14 @@ Exit criteria:
 5. Social accountability pings.
 
 ### Channel Strategy
+
 - In-app first
 - Push second
 - Email for weekly digest only
 - SMS optional premium safety channel
 
 ### Personalization Logic
+
 - Respect quiet hours and user preference.
 - Reduce frequency when user ignores repeated nudges.
 - Increase support density in first 14 quit days and post-slip windows.
@@ -498,12 +593,14 @@ Exit criteria:
 ## 11) AI Coach and Content System
 
 ### AI Coach Scope
+
 - Daily planning assistance
 - Urge-response coaching
 - Reflection summarization
 - Recovery plan generation
 
 ### AI Safety and Boundaries
+
 - No medical diagnosis claims
 - Escalation scripts for self-harm/high-risk statements
 - Hallucination mitigation:
@@ -512,6 +609,7 @@ Exit criteria:
   - Confidence-aware responses
 
 ### Content Library Needs
+
 - Motivational interviewing style snippets
 - CBT-inspired reframing cards
 - ACT-style urge surfing scripts
@@ -521,12 +619,14 @@ Exit criteria:
 ## 12) Social Safety and Moderation
 
 ### Minimum Controls
+
 - Report, mute, block
 - Rate limits on direct messages
 - Invite-only default for parties
 - Clear community rules and enforcement matrix
 
 ### Moderation Stack
+
 - Keyword risk detection
 - Human review queue
 - Temporary quarantine for suspicious accounts
@@ -534,6 +634,7 @@ Exit criteria:
 ## 13) RPG Systems Expansion Plan
 
 ### Economy Design
+
 - Currencies:
   - XP (progression)
   - Gold (spendable)
@@ -544,11 +645,13 @@ Exit criteria:
   - Utility boosts (non-pay-to-win)
 
 ### Progression
+
 - Character level from behavior actions
 - Mastery tracks per life domain
 - Class perks tied to consistency thresholds
 
 ### Social RPG
+
 - Party raid bosses linked to real habit goals
 - Guild-level seasonal campaigns
 - Cooperative buffs for group consistency
@@ -556,6 +659,7 @@ Exit criteria:
 ## 14) Platform and Engineering Roadmap (Laravel + Livewire + Flux)
 
 ### Backend
+
 - Add queue jobs for notification orchestration and digest generation.
 - Add scheduled commands for:
   - Daily rollover
@@ -568,6 +672,7 @@ Exit criteria:
   - `ProgressionService`
 
 ### Livewire
+
 - Split `RpgDashboard` into focused components:
   - `DashboardOverview`
   - `DailyCheckInPanel`
@@ -578,6 +683,7 @@ Exit criteria:
 - Use optimistic UI where safe for checklist actions.
 
 ### Flux UI
+
 - Standardized component patterns:
   - Empty states
   - Success/failure toasts
@@ -585,6 +691,7 @@ Exit criteria:
   - Accessibility-first form controls
 
 ### Performance
+
 - Eager load dashboard aggregates.
 - Cache expensive cohort analytics.
 - Add database indexes for `user_id`, `date`, `completed_at` patterns.
@@ -592,6 +699,7 @@ Exit criteria:
 ## 15) Testing Roadmap
 
 ### Automated Test Layers
+
 1. Feature tests for core user flows.
 2. Livewire component tests for reactive behavior.
 3. Notification orchestration tests.
@@ -599,6 +707,7 @@ Exit criteria:
 5. Browser smoke tests for top journeys.
 
 ### Critical Test Cases To Add
+
 - Slip logging does not duplicate penalties within configured window.
 - Recovery plan creation always follows slip event.
 - Trigger heatmap aggregates correctly across timezone boundaries.
@@ -608,29 +717,35 @@ Exit criteria:
 ## 16) Launch Plan For `myliferpg.app`
 
 ### Launch Readiness Checklist
+
 1. Production config:
+
 - `APP_URL=https://myliferpg.app`
 - secure cookies
 - HSTS
 - trusted proxy and SSL config
 
-2. Domain/SEO:
+1. Domain/SEO:
+
 - Canonical tags
 - Open Graph/Twitter cards
 - sitemap and robots
 - branded landing page narrative and screenshots
 
-3. Observability:
+1. Observability:
+
 - Error tracking
 - Performance traces
 - Product analytics pipeline
 
-4. Support:
+1. Support:
+
 - In-app help center
 - feedback widget
 - incident status page (optional but recommended)
 
-5. Policy and trust:
+1. Policy and trust:
+
 - Privacy policy
 - Terms
 - AI usage disclosure
@@ -639,6 +754,7 @@ Exit criteria:
 ## 17) Monetization and Business Model Roadmap
 
 ### Suggested Monetization Model
+
 - Free core:
   - Habit tracking
   - Daily check-ins
@@ -652,6 +768,7 @@ Exit criteria:
   - Social premium groups/events
 
 ### Monetization Guardrails
+
 - No paywall for essential relapse recovery tools.
 - No pay-to-win mechanics that undermine intrinsic motivation.
 - Clear value communication; no dark patterns.
@@ -659,22 +776,29 @@ Exit criteria:
 ## 18) Risks and Mitigations
 
 1. Risk: Streak anxiety causes dropout.
+
 - Mitigation: consistency scores, recovery streaks, grace mechanics.
 
-2. Risk: Shame loops after relapse.
+1. Risk: Shame loops after relapse.
+
 - Mitigation: neutral language, instant recovery actions, no punitive walls.
 
-3. Risk: Notification fatigue.
+1. Risk: Notification fatigue.
+
 - Mitigation: adaptive frequency and preference controls.
 
-4. Risk: Social toxicity in groups.
+1. Risk: Social toxicity in groups.
+
 - Mitigation: strict moderation tooling and defaults to private groups.
 
-5. Risk: AI trust issues.
+1. Risk: AI trust issues.
+
 - Mitigation: constrained domains, confidence signaling, escalation rules.
 
 ## 19) Definition of "Ideal v1.0" (Target Product Bar)
+
 The app qualifies as "ideal v1.0" when:
+
 1. Users can run full daily planning, execution, and reflection without leaving the app.
 2. Every slip has a clear and immediate recovery path.
 3. Craving moments trigger useful interventions within seconds.
@@ -683,7 +807,9 @@ The app qualifies as "ideal v1.0" when:
 6. Retention and behavior outcomes improve meaningfully versus baseline.
 
 ## 20) Immediate Execution Queue (Next 2 Sprints)
+
 Sprint 1:
+
 1. `craving_events` + logging UI + trigger tags.
 2. Rescue toolkit MVP (timer, breathing, substitution action).
 3. Recovery plan wizard after slip.
@@ -691,6 +817,7 @@ Sprint 1:
 5. Event taxonomy instrumentation foundation.
 
 Sprint 2:
+
 1. 42-day challenge engine skeleton.
 2. Buddy system MVP (pairing + check-ins).
 3. Weekly digest with trend summary.
@@ -698,6 +825,7 @@ Sprint 2:
 5. Cohort dashboard for retention and slip recovery.
 
 ## 21) Ongoing Maintenance Checklist
+
 Run this checklist whenever development changes product behavior:
 
 1. Update status in `## 3) Current Implementation Status (Live)`.
@@ -711,6 +839,7 @@ Run this checklist whenever development changes product behavior:
 ---
 
 This roadmap is intentionally ambitious. The core strategy is:
+
 1) relapse prevention depth,
 2) strong daily behavior design,
 3) social accountability,
