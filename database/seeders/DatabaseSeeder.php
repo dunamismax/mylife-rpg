@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(RoleAndPermissionSeeder::class);
+
         if (app()->isProduction()) {
             return;
         }
@@ -26,6 +28,7 @@ class DatabaseSeeder extends Seeder
             ],
         );
 
+        $user->syncRoles(['admin']);
         $user->stat()->firstOrCreate();
     }
 }

@@ -60,7 +60,9 @@ Default local login after setup: `test@example.com` / `password`
 - RPG stat engine for XP, HP, level, and core attributes (STR, END, INT, WIS, CHA, WIL).
 - Achievement unlocking based on quest completion and streak milestones.
 - Active status effects panel with optional penalties and expiration support.
+- Spatie Permission RBAC with seeded `admin` and `player` roles plus route-level permission middleware.
 - Fortify-powered auth flow: registration, login/logout, password reset, email verification, and two-factor authentication.
+- Monitoring dashboards via Laravel Telescope (`/telescope`) and Laravel Pulse (`/pulse`) with production gate protection.
 - Settings screens for profile, password, appearance, and two-factor management.
 
 ## Tech Stack
@@ -68,6 +70,7 @@ Default local login after setup: `test@example.com` / `password`
 | Layer | Technology | Purpose |
 |---|---|---|
 | Backend | [Laravel 12](https://laravel.com/docs/12.x) | Application framework, routing, auth middleware, Eloquent |
+| Authorization | [Spatie Laravel Permission](https://spatie.be/docs/laravel-permission) | Role-based access control with route middleware and permission checks |
 | Reactive UI | [Livewire 4](https://livewire.laravel.com/) | Server-driven reactive components |
 | Client Interactivity | [Alpine.js](https://alpinejs.dev/) | Lightweight client-side state for toggles, modals, and transitions inside Livewire views |
 | UI Components | [Flux UI Free](https://fluxui.dev/) | Shared UI primitives for forms, buttons, badges, layout |
@@ -75,7 +78,11 @@ Default local login after setup: `test@example.com` / `password`
 | Styling/Build | [Tailwind CSS 4](https://tailwindcss.com/) + [Vite 7](https://vite.dev/) | Styles and frontend asset bundling |
 | Database | SQLite (default), MySQL, PostgreSQL, SQL Server | Persistent app state |
 | Testing | [Pest 4](https://pestphp.com/) + PHPUnit 12 | Feature and unit test coverage |
+| Static Analysis | [Larastan](https://github.com/larastan/larastan) | Type-aware static analysis for Laravel code |
 | Code Style | [Laravel Pint](https://laravel.com/docs/12.x/pint) | Automated PHP formatting |
+| Debugging | [Laravel Telescope](https://laravel.com/docs/12.x/telescope) | Request, query, exception, and queue introspection |
+| Monitoring | [Laravel Pulse](https://laravel.com/docs/12.x/pulse) | Runtime dashboard for server and application metrics |
+| Log Tailing | [Laravel Pail](https://laravel.com/docs/12.x/pail) | Real-time log streaming in CLI |
 
 ## Project Structure
 
@@ -133,6 +140,7 @@ php artisan test --compact tests/Feature/RpgDashboardTest.php
 
 ```bash
 composer lint
+composer analyse
 vendor/bin/pint --dirty --format agent
 ```
 
@@ -170,11 +178,14 @@ This repository does not ship a platform-specific deployment manifest (no commit
 ## Security and Reliability Notes
 
 - Authentication is implemented with Laravel Fortify (session-based auth, password reset, email verification, optional 2FA challenge).
+- RBAC is enforced with Spatie Permission middleware aliases (`role`, `permission`, `role_or_permission`) registered in `bootstrap/app.php`.
 - Dashboard access requires `auth` and verified email middleware.
+- Dashboard/settings routes additionally enforce permission middleware for role-based authorization.
+- Telescope and Pulse dashboards are available locally and protected in non-local environments via `viewTelescope` and `viewPulse` gates.
 - Settings routes enforce authentication; two-factor settings can require password confirmation.
 - Data access uses Eloquent models and parameterized queries by default.
 - Secrets are expected in environment files (`.env`), not hard-coded in source.
-- Reliability guardrails include Pest feature tests and CI workflows for lint + tests.
+- Reliability guardrails include Pest feature tests, Larastan static analysis, and CI workflows for lint + tests.
 
 ## Documentation
 

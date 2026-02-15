@@ -2,9 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -15,6 +19,32 @@ class UserFactory extends Factory
      * The current password being used by the factory.
      */
     protected static ?string $password;
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (User $user): void {
+            if (! Schema::hasTable('roles') || ! Schema::hasTable('permissions') || ! Schema::hasTable('model_has_roles')) {
+                return;
+            }
+
+            $guardName = config('auth.defaults.guard', 'web');
+            $playerPermissions = [
+                'access dashboard',
+                'manage profile settings',
+                'manage security settings',
+            ];
+
+            $permissionNames = collect($playerPermissions)
+                ->map(fn (string $permission): string => Permission::findOrCreate($permission, $guardName)->name);
+
+            $playerRole = Role::findOrCreate('player', $guardName);
+            $playerRole->syncPermissions($permissionNames);
+
+            if (! $user->hasRole($playerRole->name)) {
+                $user->assignRole($playerRole);
+            }
+        });
+    }
 
     /**
      * Define the model's default state.

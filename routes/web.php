@@ -8,7 +8,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::livewire('dashboard', RpgDashboard::class)
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'permission:access dashboard'])
     ->name('dashboard');
 
 require __DIR__.'/settings.php';

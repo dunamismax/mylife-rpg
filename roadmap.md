@@ -70,6 +70,9 @@ Implemented:
 - Dashboard metrics upgrades
 - Improved dashboard and landing UX
 - Reliable local seeded login account (`test@example.com` / `password`) for onboarding and manual QA
+- RBAC foundation with Spatie Permission (`admin` and `player` roles, route-level permission middleware)
+- Monitoring stack with Laravel Telescope and Laravel Pulse dashboards
+- Static analysis integration with Larastan + project baseline and CI lint workflow execution
 
 In progress:
 
