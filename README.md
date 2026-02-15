@@ -28,8 +28,7 @@ MyLife RPG is a productivity game for people who want habit tracking to feel lik
 
 - PHP 8.4+
 - Composer 2+
-- Node.js 22+ (matches CI)
-- npm 10+
+- Bun 1.2+
 - SQLite (default) or MySQL/PostgreSQL
 
 ### Run
@@ -39,10 +38,10 @@ git clone <your-repo-url> mylife-rpg
 cd mylife-rpg
 cp .env.example .env
 composer install
-npm install
+bun install
 php artisan key:generate
 php artisan migrate --seed
-composer dev
+bun run dev
 ```
 
 Expected result:
@@ -117,7 +116,7 @@ mylife-rpg/
 
 ```bash
 composer install
-npm install
+bun install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate --seed
@@ -126,7 +125,18 @@ php artisan migrate --seed
 ### Run
 
 ```bash
+bun run dev
+# optional alias (delegates to bun run dev):
 composer dev
+```
+
+### Bun Dev Sub-Scripts
+
+```bash
+bun run dev:server
+bun run dev:queue
+bun run dev:logs
+bun run dev:vite
 ```
 
 ### Test
@@ -147,14 +157,14 @@ vendor/bin/pint --dirty --format agent
 ### Build
 
 ```bash
-npm run build
+bun run build
 ```
 
 ### Deploy (Generic Laravel Flow)
 
 ```bash
 php artisan down
-npm run build
+bun run build
 php artisan migrate --force
 php artisan optimize
 php artisan up
@@ -162,14 +172,14 @@ php artisan up
 
 Command verification notes for this README rewrite:
 
-- Verified in this environment: `php artisan --version`, `php artisan route:list`, `php artisan migrate --graceful --no-interaction`, `php artisan test --compact tests/Feature/RpgDashboardTest.php`, `npm run build`.
-- Not executed in this rewrite: `composer dev`, full production deploy sequence.
+- Verified in this environment: `bun run build`, `php artisan test --compact tests/Feature/RpgDashboardTest.php`.
+- Not executed in this rewrite: `bun run dev`, full production deploy sequence.
 
 ## Deployment and Operations
 
 This repository does not ship a platform-specific deployment manifest (no committed Docker/Kubernetes/Caddy config). Deploy as a standard Laravel app on your preferred platform.
 
-- Build assets with `npm run build` before release.
+- Build assets with `bun run build` before release.
 - Run database changes with `php artisan migrate --force` during deploy.
 - Use `GET /up` as a basic health endpoint.
 - Use `php artisan pail` for live log tailing.
