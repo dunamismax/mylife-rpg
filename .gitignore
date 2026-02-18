@@ -1,6 +1,12 @@
 /vendor
 /node_modules
 
+/build
+/.react-router
+/.turbo
+/.cache
+/dist
+
 /public/build
 /public/hot
 /public/storage
@@ -26,6 +32,8 @@
 .phpunit.result.cache
 /coverage
 
+bun.lockb
+bun.lock
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
