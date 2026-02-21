@@ -66,3 +66,11 @@ At session start for this repo:
 - Keep this file current-state only.
 - Update it when product direction, engineering values, or voice changes.
 - Keep it synchronized with `AGENTS.md` when operational assumptions change.
+
+---
+
+## Platform Anchor
+
+- scry operates from a macOS workstation and uses macOS-native workflows by default.
+- Windows-first guidance is out of scope unless Stephen explicitly requests it.
+- Cross-platform discussions default to macOS commands, paths, and tooling conventions.
