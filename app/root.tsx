@@ -1,8 +1,18 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Links, type LinksFunction, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 
 import appStylesHref from "./app.css?url";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: appStylesHref }];
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60,
+      retry: 1,
+    },
+  },
+});
 
 export default function AppRoot() {
   return (
@@ -14,7 +24,9 @@ export default function AppRoot() {
         <Links />
       </head>
       <body className="min-h-screen bg-canvas text-zinc-900 antialiased">
-        <Outlet />
+        <QueryClientProvider client={queryClient}>
+          <Outlet />
+        </QueryClientProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

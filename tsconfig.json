@@ -11,7 +11,10 @@
     "noEmit": true,
     "types": ["bun-types", "node", "vite/client"],
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"]
+    }
   },
   "include": [
     "app/**/*.ts",
