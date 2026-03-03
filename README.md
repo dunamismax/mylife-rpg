@@ -1,4 +1,4 @@
-# MyLife RPG
+# QuestLog
 
 Gamified productivity system that turns daily habits, tasks, and goals into RPG progression. Quests, XP, leveling, stats, and achievements — all backed by a real database and designed for long-term use.
 
@@ -19,8 +19,8 @@ Gamified productivity system that turns daily habits, tasks, and goals into RPG 
 ## Quick Start
 
 ```bash
-git clone https://github.com/dunamismax/mylife-rpg.git
-cd mylife-rpg
+git clone https://github.com/dunamismax/questlog.git
+cd questlog
 bun install
 cp .env.example .env
 # configure DATABASE_URL in .env

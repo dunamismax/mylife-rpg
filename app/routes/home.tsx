@@ -15,7 +15,7 @@ import {
 import { dailyCheckInSchema, habitFormSchema, questFormSchema } from "../lib/validators";
 
 export const meta: MetaFunction = () => [
-  { title: "MyLife RPG" },
+  { title: "QuestLog" },
   {
     name: "description",
     content: "Life-ops dashboard built with React Router, Tailwind, TypeScript, and Bun.",
@@ -168,7 +168,7 @@ export default function HomeRoute() {
         <div className="relative grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
-              MyLife RPG
+              QuestLog
             </p>
             <h1 className="mt-2 text-3xl font-bold leading-tight md:text-4xl">
               Your life is the campaign. Build momentum one turn at a time.
