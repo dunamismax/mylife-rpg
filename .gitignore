@@ -1,11 +1,20 @@
 /vendor
 /node_modules
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+uv.lock
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-wal
 
 /build
 /.react-router
 /.turbo
 /.cache
 /dist
+/staticfiles
 
 /public/build
 /public/hot

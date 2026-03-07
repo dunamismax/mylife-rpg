@@ -1,75 +1,59 @@
 # QuestLog
 
-Gamified productivity system that turns daily habits, tasks, and goals into RPG progression. Quests, XP, leveling, stats, and achievements — all backed by a real database and designed for long-term use.
+QuestLog is now a narrow Django app for one person to log quests, recurring habits, and a single daily check-in. XP and levels remain as lightweight bookkeeping, but the product is no longer framed as a full life-RPG simulator.
 
-## Features
+## Product Shape
 
-- **RPG progression engine** — XP, leveling, stat allocation, and achievement tracking
-- **Quest system** — create and complete quests tied to real-world goals
-- **Habit tracking** — recurring habits with streak mechanics
-- **Domain-driven design** — RPG rules live in a testable engine, independent of UI
-- **Drizzle ORM** — type-safe Postgres schema with migrations
-- **shadcn/ui patterns** — Radix primitives + Tailwind + class-variance-authority
+- Quests: create them, complete them once, and keep a durable record of when they were finished.
+- Habits: define recurring habits, log completion by day, and keep a real streak/history trail.
+- Daily check-in: keep one check-in per day with intention, trigger notes, reflection, and slip tracking.
+- Progress: XP and level summarize logged work. They support the journal instead of dominating it.
 
-## Prerequisites
+This baseline is intentionally single-user. Authentication, teams, achievements, and game-like status systems are out of scope for this pass.
 
-- [Bun](https://bun.sh)
-- PostgreSQL
+## Stack
+
+- Python 3
+- Django
+- SQLite for the default local database
+- Server-rendered HTML templates
+- Plain CSS
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/dunamismax/questlog.git
-cd questlog
-bun install
+uv venv
+uv pip install -r requirements.txt
 cp .env.example .env
-# configure DATABASE_URL in .env
-bun run db:migrate
-bun run dev
+uv run python manage.py migrate
+uv run python manage.py runserver
 ```
 
-## Commands
+Open `http://127.0.0.1:8000/`.
 
-| Command | Description |
-|---|---|
-| `bun run dev` | Start dev server |
-| `bun run build` | Production build |
-| `bun run start` | Start production server |
-| `bun run lint` | Biome lint check |
-| `bun run format` | Biome auto-format |
-| `bun run typecheck` | TypeScript type check |
-| `bun run test` | Run Bun tests |
-| `bun run db:generate` | Generate Drizzle migrations |
-| `bun run db:migrate` | Run database migrations |
-| `bun run db:studio` | Open Drizzle Studio |
+## Common Commands
 
-## Stack
-
-- **Runtime**: Bun
-- **Frontend**: React 19 · React Router 7 (framework mode) · Tailwind CSS v4
-- **Components**: shadcn/ui patterns (Radix + CVA)
-- **Database**: PostgreSQL · Drizzle ORM
-- **Validation**: Zod
-- **Tooling**: Biome · TypeScript 5.9
-
-## Project Structure
-
+```bash
+uv run python manage.py migrate
+uv run python manage.py test
+uv run python manage.py runserver
+uv run python manage.py check
 ```
-app/                    # React frontend
-  routes/               # Route modules
-  components/           # UI components
-  lib/                  # RPG engine, utilities, types
-    rpg-engine.ts       # Core progression rules (testable)
-drizzle/                # Schema and migrations
-scripts/                # Orchestration scripts
-tests/                  # Domain and behavior tests
-docs/                   # Architecture documentation
-public/                 # Static assets
+
+## Project Layout
+
+```text
+config/                 Django project settings and root URLs
+journal/                Core app: models, forms, services, views, tests
+templates/              Server-rendered templates
+static/css/             Plain CSS
+data/                   SQLite database location for local development
+docs/                   Product and architecture notes
 ```
 
 ## Documentation
 
-- [`docs/architecture.md`](docs/architecture.md) — architecture notes
+- [`docs/architecture.md`](docs/architecture.md)
 
 ## License
 
