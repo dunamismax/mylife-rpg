@@ -13,8 +13,11 @@ Read those files first. Then read this repo's README and task-relevant code.
 
 ## Repo Rules
 
-- Run `bun run lint && bun run typecheck` before committing.
+- Read `README.md` and `BUILD.md` before making major repo changes.
+- Verify Python/Django changes with the smallest truthful command set:
+  - `uv run python manage.py check`
+  - `uv run python manage.py test`
+  - `uv run python -m compileall manage.py config journal`
 - No AI attribution in commits. Commit as `dunamismax`.
-- Push directly to main. Force-push when needed.
-- Dual remotes: GitHub + Codeberg.
-
+- Do not push from this repo unless the task explicitly requires it.
+- Keep the repo aligned to the current Python/Django + HTML/CSS stack.

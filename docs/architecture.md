@@ -21,13 +21,11 @@ Everything outside that core was either prototype flourish or premature system d
 
 ## Deliberate Scope Cuts
 
-These were removed from the foundation because they were not yet justified by the repo's real product shape:
+These are intentionally out of scope because they are not justified by the repo's current product shape:
 
-- React Router application shell
-- Tailwind/shadcn component scaffolding
-- Drizzle schema and migration stack
 - generic multi-user RPG framing
 - achievements and status effects
+- client-heavy application behavior
 - client-side demo state as the main source of truth
 
 ## Data Model
