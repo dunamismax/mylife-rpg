@@ -57,7 +57,7 @@
           <li>
             <div>
               <strong>{{ quest.title }}</strong>
-              <p>{{ quest.get_cadence_display }} · {{ quest.get_difficulty_display }} · {{ quest.xp_reward }} XP</p>
+              <p>{{ quest.get_difficulty_display }} · {{ quest.xp_reward }} XP</p>
             </div>
             <form method="post" action="{% url 'journal:complete_quest' quest.id %}">
               {% csrf_token %}
@@ -77,7 +77,7 @@
           <li>
             <div>
               <strong>{{ habit.title }}</strong>
-              <p>{{ habit.get_kind_display }} · streak {{ habit.streak }} · {{ habit.xp_reward }} XP</p>
+              <p>{{ habit.get_kind_display }} · streak {{ habit.current_streak }} · {{ habit.xp_reward }} XP</p>
             </div>
             <form method="post" action="{% url 'journal:log_habit' habit.id %}">
               {% csrf_token %}

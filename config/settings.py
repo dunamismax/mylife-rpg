@@ -1,15 +1,46 @@
 import os
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "questlog-dev-secret-key")
-DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-    if host.strip()
-]
+
+def env_bool(name: str, *, default: bool) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def env_list(name: str, *, default: str = "") -> list[str]:
+    return [
+        item.strip()
+        for item in os.environ.get(name, default).split(",")
+        if item.strip()
+    ]
+
+
+DEBUG = env_bool("DJANGO_DEBUG", default=True)
+
+default_secret_key = "questlog-dev-secret-key"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", default_secret_key if DEBUG else "")
+ALLOWED_HOSTS = env_list(
+    "DJANGO_ALLOWED_HOSTS",
+    default="127.0.0.1,localhost" if DEBUG else "",
+)
+
+if not DEBUG:
+    if not SECRET_KEY or SECRET_KEY in {default_secret_key, "change-me-before-production"}:
+        raise ImproperlyConfigured(
+            "Set DJANGO_SECRET_KEY to a unique secret before running with DJANGO_DEBUG=0."
+        )
+
+    if not ALLOWED_HOSTS:
+        raise ImproperlyConfigured(
+            "Set DJANGO_ALLOWED_HOSTS before running with DJANGO_DEBUG=0."
+        )
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -81,5 +112,14 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_SSL_REDIRECT = not DEBUG
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = "same-origin"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

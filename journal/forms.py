@@ -10,7 +10,7 @@ class DateInput(forms.DateInput):
 class QuestForm(forms.ModelForm):
     class Meta:
         model = Quest
-        fields = ["title", "notes", "cadence", "difficulty", "due_date", "xp_reward"]
+        fields = ["title", "notes", "difficulty", "due_date", "xp_reward"]
         widgets = {
             "notes": forms.Textarea(attrs={"rows": 3}),
             "due_date": DateInput(),

@@ -31,7 +31,7 @@ These are intentionally out of scope because they are not justified by the repo'
 ## Data Model
 
 - `Progress`: singleton-style XP and level summary for the local user
-- `Quest`: a one-time or recurring commitment with completion timestamp
+- `Quest`: a one-time commitment with a completion timestamp
 - `Habit`: a recurring behavior definition with current streak metadata
 - `HabitLog`: a dated completion record for a habit
 - `DailyCheckIn`: one row per day for intention, triggers, reflection, and slip tracking

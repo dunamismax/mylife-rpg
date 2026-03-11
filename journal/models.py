@@ -1,8 +1,14 @@
+from datetime import timedelta
+
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils import timezone
 
 
 class Progress(models.Model):
+    SINGLETON_PK = 1
+
     total_xp = models.PositiveIntegerField(default=0)
     level = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -11,17 +17,28 @@ class Progress(models.Model):
     class Meta:
         verbose_name = "progress"
         verbose_name_plural = "progress"
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(pk=1),
+                name="progress_singleton_pk",
+            ),
+        ]
 
     def __str__(self) -> str:
         return f"Level {self.level} ({self.total_xp} XP)"
 
+    def clean(self) -> None:
+        super().clean()
+        if self.pk not in (None, self.SINGLETON_PK):
+            raise ValidationError({"id": "Progress must use the singleton primary key."})
+
+    def save(self, *args, **kwargs):
+        self.pk = self.SINGLETON_PK
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
 
 class Quest(models.Model):
-    class Cadence(models.TextChoices):
-        DAILY = "daily", "Daily"
-        WEEKLY = "weekly", "Weekly"
-        ONE_OFF = "one_off", "One-off"
-
     class Difficulty(models.TextChoices):
         EASY = "easy", "Easy"
         MEDIUM = "medium", "Medium"
@@ -29,7 +46,6 @@ class Quest(models.Model):
 
     title = models.CharField(max_length=255)
     notes = models.TextField(blank=True)
-    cadence = models.CharField(max_length=16, choices=Cadence.choices, default=Cadence.DAILY)
     difficulty = models.CharField(max_length=16, choices=Difficulty.choices, default=Difficulty.MEDIUM)
     xp_reward = models.PositiveIntegerField(default=25)
     due_date = models.DateField(blank=True, null=True)
@@ -67,6 +83,16 @@ class Habit(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    @property
+    def current_streak(self) -> int:
+        if self.last_completed_on is None:
+            return 0
+
+        if self.last_completed_on < timezone.localdate() - timedelta(days=1):
+            return 0
+
+        return self.streak
 
 
 class HabitLog(models.Model):

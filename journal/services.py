@@ -7,7 +7,7 @@ from .models import Habit, HabitLog, Progress, Quest
 
 
 def get_progress() -> Progress:
-    progress, _ = Progress.objects.get_or_create(pk=1)
+    progress, _ = Progress.objects.get_or_create(pk=Progress.SINGLETON_PK)
     return progress
 
 
@@ -15,11 +15,10 @@ def _award_xp(amount: int) -> None:
     if amount <= 0:
         return
 
-    with transaction.atomic():
-        progress, _ = Progress.objects.select_for_update().get_or_create(pk=1)
-        progress.total_xp += amount
-        progress.level = max(1, (progress.total_xp // 100) + 1)
-        progress.save(update_fields=["total_xp", "level", "updated_at"])
+    progress, _ = Progress.objects.select_for_update().get_or_create(pk=Progress.SINGLETON_PK)
+    progress.total_xp += amount
+    progress.level = max(1, (progress.total_xp // 100) + 1)
+    progress.save(update_fields=["total_xp", "level", "updated_at"])
 
 
 def complete_quest(quest: Quest, *, completed_at=None) -> bool:
@@ -32,8 +31,8 @@ def complete_quest(quest: Quest, *, completed_at=None) -> bool:
 
         locked.completed_at = timestamp
         locked.save(update_fields=["completed_at", "updated_at"])
+        _award_xp(locked.xp_reward)
 
-    _award_xp(quest.xp_reward)
     return True
 
 
@@ -58,6 +57,6 @@ def log_habit_completion(habit: Habit, *, on_date: date | None = None) -> bool:
 
         locked.last_completed_on = logged_on
         locked.save(update_fields=["streak", "last_completed_on", "updated_at"])
+        _award_xp(log.xp_awarded)
 
-    _award_xp(log.xp_awarded)
     return True
