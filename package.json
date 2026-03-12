@@ -1,0 +1,28 @@
+{
+  "name": "questlog",
+  "private": true,
+  "packageManager": "pnpm@10.30.3",
+  "scripts": {
+    "dev": "pnpm --filter @questlog/web dev",
+    "build": "pnpm --filter @questlog/web build",
+    "preview": "pnpm --filter @questlog/web preview",
+    "test": "pnpm --filter @questlog/server test && pnpm --filter @questlog/web test",
+    "lint": "pnpm exec biome lint .",
+    "format": "pnpm exec biome format --write .",
+    "check": "pnpm exec biome check .",
+    "db:generate": "pnpm --filter @questlog/db db:generate",
+    "db:migrate": "pnpm --filter @questlog/db db:migrate",
+    "db:push": "pnpm --filter @questlog/db db:push",
+    "db:studio": "pnpm --filter @questlog/db db:studio",
+    "auth:generate": "pnpm --filter @questlog/server auth:generate"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lightningcss"
+    ]
+  }
+}

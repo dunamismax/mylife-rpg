@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@questlog/ai": ["packages/ai/src/index.ts"],
+      "@questlog/ai/*": ["packages/ai/src/*"],
+      "@questlog/contracts": ["packages/contracts/src/index.ts"],
+      "@questlog/contracts/*": ["packages/contracts/src/*"],
+      "@questlog/db": ["packages/db/src/index.ts"],
+      "@questlog/db/*": ["packages/db/src/*"],
+      "@questlog/server": ["packages/server/src/index.ts"],
+      "@questlog/server/*": ["packages/server/src/*"],
+      "@questlog/telemetry": ["packages/telemetry/src/index.ts"],
+      "@questlog/telemetry/*": ["packages/telemetry/src/*"]
+    }
+  }
+}

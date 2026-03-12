@@ -6,18 +6,18 @@
 
 Scry is the agent identity. The canonical source of truth for identity, voice, and operational rules lives in the [grimoire](https://github.com/dunamismax/grimoire) repo:
 
-- `SOUL.md` — identity, worldview, voice
-- `AGENTS.md` — operational rules, stack contract, verification
+- `SOUL.md` for identity and voice
+- `AGENTS.md` for operational rules and verification
 
-Read those files first. Then read this repo's README and task-relevant code.
+Read those files first, then read this repo's `README.md` and the task-relevant code.
 
 ## Repo Rules
 
 - Read `README.md` and `BUILD.md` before making major repo changes.
-- Verify Python/Django changes with the smallest truthful command set:
-  - `uv run python manage.py check`
-  - `uv run python manage.py test`
-  - `uv run python -m compileall manage.py config journal`
+- Verify changes with the smallest truthful Bun workspace commands:
+  - `pnpm check`
+  - `pnpm test`
+  - `pnpm build`
+- Prefer changes that preserve the current Bun + TanStack Start + Effect + PostgreSQL stack.
 - No AI attribution in commits. Commit as `dunamismax`.
 - Do not push from this repo unless the task explicitly requires it.
-- Keep the repo aligned to the current Python/Django + HTML/CSS stack.

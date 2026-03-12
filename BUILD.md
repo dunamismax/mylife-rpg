@@ -1,61 +1,33 @@
-# questlog — Build Tracker
+# Build Guide
 
-**Status:** Documentation and instruction cleanup for the Django baseline
-**Last Updated:** 2026-03-08
-**Branch:** `codex/stack-realign-20260308-105446`
+## Local Verification
 
-## Current Product Definition
+Run the full workspace verification from the repo root:
 
-QuestLog is a single-user Django app for:
+```bash
+pnpm install
+pnpm check
+pnpm test
+pnpm build
+```
 
-- one-time quests with a completion record
-- recurring habits with dated logs and streak tracking
-- one daily check-in with intention and reflection
+## Database Setup
 
-XP and level remain as lightweight bookkeeping around the journal.
+QuestLog expects PostgreSQL. With the default `.env.example`, this container matches local development:
 
-## Cleanup Objective
+```bash
+docker run --name questlog-postgres \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=questlog \
+  -p 5432:5432 \
+  -d postgres:17
+pnpm db:push
+```
 
-This pass is limited to repo alignment work:
+## Runtime Notes
 
-- keep the existing Python/Django implementation intact
-- remove stale repository guidance that still describes non-Python tooling
-- make build, verification, and agent instructions truthful for the current stack
-- verify the repo with the smallest meaningful Django checks
-
-## Planned Changes
-
-### Phase 1 — Inspect and document the real state
-- [x] Confirm the repo is already a Django + HTML/CSS application
-- [x] Identify stale repo-specific instructions and old-stack references
-- [x] Rewrite this tracker before major edits
-
-### Phase 2 — Align repo documentation
-- [x] Leave `README.md` unchanged because it already matches the Django app
-- [x] Rewrite `CLAUDE.md` for Python/Django verification and local-only workflow
-- [x] Remove stale old-stack wording from repo docs and helper instructions
-- [x] Trim irrelevant ignore patterns that no longer match this repo
-
-### Phase 3 — Verify and checkpoint
-- [ ] `uv run python manage.py check` blocked: Django is not installed in the sandbox environment
-- [ ] `uv run python manage.py test` blocked: Django is not installed in the sandbox environment
-- [x] `uv run python -m compileall manage.py config journal`
-- [ ] Create a local commit once docs and verification are coherent
-
-## Verification Snapshot
-
-Completed:
-
-- `UV_CACHE_DIR=/tmp/uv-cache uv run python -m compileall manage.py config journal`
-
-Blocked:
-
-- `UV_CACHE_DIR=/tmp/uv-cache uv run python manage.py check`
-- `UV_CACHE_DIR=/tmp/uv-cache uv run python manage.py test`
-
-Both Django management commands fail with `ModuleNotFoundError: No module named 'django'` because the sandbox does not have Django installed.
-
-## Notes
-
-- This repo already appears to be migrated to Django; the remaining work is mostly documentation and instruction cleanup.
-- No changes should reach outside this worktree.
+- The web app runs on `http://127.0.0.1:3000`.
+- Better Auth tables are committed in `packages/db/src/auth-schema.ts`.
+- If the auth config changes, regenerate those tables with `pnpm auth:generate`.
+- AI chat requires `OPENAI_API_KEY`; otherwise the fallback coach remains available.

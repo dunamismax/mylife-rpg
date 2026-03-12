@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "#/*": ["./src/*"],
+      "@questlog/ai": ["../../packages/ai/src/index.ts"],
+      "@questlog/contracts": ["../../packages/contracts/src/index.ts"],
+      "@questlog/server": ["../../packages/server/src/index.ts"],
+      "@questlog/telemetry": ["../../packages/telemetry/src/index.ts"],
+      "@questlog/db": ["../../packages/db/src/index.ts"]
+    },
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"]
+  }
+}

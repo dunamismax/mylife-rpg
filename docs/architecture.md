@@ -1,54 +1,43 @@
 # Architecture
 
-## Product Definition
+## Product Shape
 
-QuestLog is a personal quest journal, not a broad life-ops RPG. The smallest sane product already latent in the old prototype was:
+QuestLog is deliberately small:
 
-- a list of quests that can be finished and kept as a record,
-- a small set of recurring habits with streaks,
-- one daily check-in with intention and reflection,
-- a lightweight XP/level summary.
+- quests are finite commitments with one completion event
+- habits are recurring behaviors with dated logs and streak state
+- check-ins are one row per day with intention, triggers, and reflection
+- XP and level summarize momentum instead of turning the product into a game
 
-Everything outside that core was either prototype flourish or premature system design.
+## Monorepo Boundaries
 
-## Foundation
+- `apps/web` owns the TanStack Start app, route tree, API handlers, and the dashboard UI
+- `packages/contracts` defines the transport and domain contracts with Effect Schema
+- `packages/db` owns the Drizzle schema, PostgreSQL client, and generated Better Auth tables
+- `packages/server` contains Effect-powered application services, validation, and session/auth helpers
+- `packages/ai` contains the Mastra coaching workflow plus a deterministic fallback strategy
+- `packages/telemetry` initializes OpenTelemetry tracing for server-side execution
 
-- Framework: Django
-- Rendering: server-rendered templates
-- Styling: plain CSS
-- Persistence: SQLite by default, through Django models and migrations
-- Interaction model: standard HTML forms and POST/redirect/GET flows
+## Data Flow
 
-## Deliberate Scope Cuts
+1. The browser reads dashboard state through TanStack Query.
+2. Route handlers call `requireSession()` and then execute Effect services through `runServerEffect()`.
+3. Services validate payloads with Effect Schema, perform Drizzle queries inside PostgreSQL transactions, and return contract-shaped results.
+4. Mutations return the refreshed dashboard so the client can merge server truth immediately.
+5. The AI panel uses TanStack AI for live chat and falls back to deterministic coaching text when `OPENAI_API_KEY` is absent.
 
-These are intentionally out of scope because they are not justified by the repo's current product shape:
+## Persistence Model
 
-- generic multi-user RPG framing
-- achievements and status effects
-- client-heavy application behavior
-- client-side demo state as the main source of truth
+- `progress` stores total XP and the derived level per user
+- `quests` stores open/completed commitments and XP rewards
+- `habits` stores recurring behavior definitions plus streak metadata
+- `habit_logs` stores dated habit completions and awarded XP
+- `daily_check_ins` stores one check-in per user per day
+- Better Auth tables store user/session/account state
 
-## Data Model
+## Operational Notes
 
-- `Progress`: singleton-style XP and level summary for the local user
-- `Quest`: a one-time commitment with a completion timestamp
-- `Habit`: a recurring behavior definition with current streak metadata
-- `HabitLog`: a dated completion record for a habit
-- `DailyCheckIn`: one row per day for intention, triggers, reflection, and slip tracking
-
-## Request Flow
-
-- The dashboard is the product.
-- Creating a quest or habit writes immediately to the database.
-- Completing a quest awards XP once and stamps `completed_at`.
-- Logging a habit creates a dated `HabitLog`, updates streak state, and awards XP once for that day.
-- Saving a daily check-in upserts today's row.
-
-## Next Expansion Points
-
-If the product earns more scope later, the next additions should still stay boring:
-
-- authentication for multiple users,
-- export/reporting,
-- better filtering and archival views,
-- stricter audit trails for progress changes.
+- PostgreSQL is the system of record
+- OpenTelemetry wraps server calls so mutations and dashboard loads can be traced consistently
+- Biome handles formatting, import organization, and linting
+- Vitest covers the core date/streak rules and fallback coaching behavior
