@@ -1,146 +1,132 @@
-import { Schema } from 'effect'
+import * as z from 'zod'
 
-export const QuestDifficultySchema = Schema.Literal('easy', 'medium', 'hard')
-export type QuestDifficulty = Schema.Schema.Type<typeof QuestDifficultySchema>
+const NonEmptyStringSchema = z.string().min(1)
+const NonNegativeIntSchema = z.int().min(0)
 
-export const HabitKindSchema = Schema.Literal('build', 'avoid')
-export type HabitKind = Schema.Schema.Type<typeof HabitKindSchema>
+export const QuestDifficultySchema = z.enum(['easy', 'medium', 'hard'])
+export type QuestDifficulty = z.infer<typeof QuestDifficultySchema>
 
-export const IsoDateSchema = Schema.String
-export type IsoDate = Schema.Schema.Type<typeof IsoDateSchema>
+export const HabitKindSchema = z.enum(['build', 'avoid'])
+export type HabitKind = z.infer<typeof HabitKindSchema>
 
-export const IsoDateTimeSchema = Schema.String
-export type IsoDateTime = Schema.Schema.Type<typeof IsoDateTimeSchema>
+export const IsoDateSchema = z.string()
+export type IsoDate = z.infer<typeof IsoDateSchema>
 
-export const NullableStringSchema = Schema.NullOr(Schema.String)
-export const NullableDateSchema = Schema.NullOr(IsoDateSchema)
-export const NullableDateTimeSchema = Schema.NullOr(IsoDateTimeSchema)
+export const IsoDateTimeSchema = z.string()
+export type IsoDateTime = z.infer<typeof IsoDateTimeSchema>
 
-export const ProgressSnapshotSchema = Schema.Struct({
-  level: Schema.Int.pipe(Schema.greaterThanOrEqualTo(1)),
-  totalXp: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
+export const NullableStringSchema = z.string().nullable()
+export const NullableDateSchema = IsoDateSchema.nullable()
+export const NullableDateTimeSchema = IsoDateTimeSchema.nullable()
+
+export const ProgressSnapshotSchema = z.object({
+  level: z.int().min(1),
+  totalXp: NonNegativeIntSchema,
 })
-export type ProgressSnapshot = Schema.Schema.Type<typeof ProgressSnapshotSchema>
+export type ProgressSnapshot = z.infer<typeof ProgressSnapshotSchema>
 
-export const QuestSnapshotSchema = Schema.Struct({
-  id: Schema.String,
-  title: Schema.NonEmptyString,
-  notes: Schema.String,
+export const QuestSnapshotSchema = z.object({
+  id: z.string(),
+  title: NonEmptyStringSchema,
+  notes: z.string(),
   difficulty: QuestDifficultySchema,
-  xpReward: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
+  xpReward: NonNegativeIntSchema,
   dueDate: NullableDateSchema,
   completedAt: NullableDateTimeSchema,
   createdAt: IsoDateTimeSchema,
 })
-export type QuestSnapshot = Schema.Schema.Type<typeof QuestSnapshotSchema>
+export type QuestSnapshot = z.infer<typeof QuestSnapshotSchema>
 
-export const HabitSnapshotSchema = Schema.Struct({
-  id: Schema.String,
-  title: Schema.NonEmptyString,
-  notes: Schema.String,
+export const HabitSnapshotSchema = z.object({
+  id: z.string(),
+  title: NonEmptyStringSchema,
+  notes: z.string(),
   kind: HabitKindSchema,
-  xpReward: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
-  streak: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
-  currentStreak: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
+  xpReward: NonNegativeIntSchema,
+  streak: NonNegativeIntSchema,
+  currentStreak: NonNegativeIntSchema,
   lastCompletedOn: NullableDateSchema,
   createdAt: IsoDateTimeSchema,
 })
-export type HabitSnapshot = Schema.Schema.Type<typeof HabitSnapshotSchema>
+export type HabitSnapshot = z.infer<typeof HabitSnapshotSchema>
 
-export const HabitLogSnapshotSchema = Schema.Struct({
-  id: Schema.String,
-  habitId: Schema.String,
-  habitTitle: Schema.NonEmptyString,
+export const HabitLogSnapshotSchema = z.object({
+  id: z.string(),
+  habitId: z.string(),
+  habitTitle: NonEmptyStringSchema,
   loggedOn: IsoDateSchema,
-  xpAwarded: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
+  xpAwarded: NonNegativeIntSchema,
   createdAt: IsoDateTimeSchema,
 })
-export type HabitLogSnapshot = Schema.Schema.Type<typeof HabitLogSnapshotSchema>
+export type HabitLogSnapshot = z.infer<typeof HabitLogSnapshotSchema>
 
-export const DailyCheckInSnapshotSchema = Schema.Struct({
+export const DailyCheckInSnapshotSchema = z.object({
   checkInDate: IsoDateSchema,
-  dailyIntention: Schema.NonEmptyString,
-  ifThenPlan: Schema.String,
-  cravingIntensity: Schema.NullOr(Schema.Int.pipe(Schema.between(0, 10))),
-  triggerNotes: Schema.String,
-  reflection: Schema.String,
-  slipHappened: Schema.Boolean,
+  dailyIntention: NonEmptyStringSchema,
+  ifThenPlan: z.string(),
+  cravingIntensity: z.int().min(0).max(10).nullable(),
+  triggerNotes: z.string(),
+  reflection: z.string(),
+  slipHappened: z.boolean(),
   createdAt: IsoDateTimeSchema,
   updatedAt: IsoDateTimeSchema,
 })
-export type DailyCheckInSnapshot = Schema.Schema.Type<
-  typeof DailyCheckInSnapshotSchema
->
+export type DailyCheckInSnapshot = z.infer<typeof DailyCheckInSnapshotSchema>
 
-export const DashboardSummarySchema = Schema.Struct({
-  openQuests: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
-  questsCompletedThisWeek: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
-  habitLogsThisWeek: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
-  checkInDone: Schema.Boolean,
+export const DashboardSummarySchema = z.object({
+  openQuests: NonNegativeIntSchema,
+  questsCompletedThisWeek: NonNegativeIntSchema,
+  habitLogsThisWeek: NonNegativeIntSchema,
+  checkInDone: z.boolean(),
 })
-export type DashboardSummary = Schema.Schema.Type<typeof DashboardSummarySchema>
+export type DashboardSummary = z.infer<typeof DashboardSummarySchema>
 
-export const DashboardPayloadSchema = Schema.Struct({
+export const DashboardPayloadSchema = z.object({
   today: IsoDateSchema,
   weekStart: IsoDateSchema,
-  aiAvailable: Schema.Boolean,
   progress: ProgressSnapshotSchema,
   summary: DashboardSummarySchema,
-  openQuests: Schema.Array(QuestSnapshotSchema),
-  recentlyCompletedQuests: Schema.Array(QuestSnapshotSchema),
-  habits: Schema.Array(HabitSnapshotSchema),
-  recentHabitLogs: Schema.Array(HabitLogSnapshotSchema),
-  todayCheckIn: Schema.NullOr(DailyCheckInSnapshotSchema),
+  openQuests: z.array(QuestSnapshotSchema),
+  recentlyCompletedQuests: z.array(QuestSnapshotSchema),
+  habits: z.array(HabitSnapshotSchema),
+  recentHabitLogs: z.array(HabitLogSnapshotSchema),
+  todayCheckIn: DailyCheckInSnapshotSchema.nullable(),
 })
-export type DashboardPayload = Schema.Schema.Type<typeof DashboardPayloadSchema>
+export type DashboardPayload = z.infer<typeof DashboardPayloadSchema>
 
-export const CreateQuestInputSchema = Schema.Struct({
-  title: Schema.NonEmptyString,
-  notes: Schema.String,
+export const CreateQuestInputSchema = z.object({
+  title: NonEmptyStringSchema,
+  notes: z.string(),
   difficulty: QuestDifficultySchema,
   dueDate: NullableDateSchema,
-  xpReward: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
+  xpReward: NonNegativeIntSchema,
 })
-export type CreateQuestInput = Schema.Schema.Type<typeof CreateQuestInputSchema>
+export type CreateQuestInput = z.infer<typeof CreateQuestInputSchema>
 
-export const CreateHabitInputSchema = Schema.Struct({
-  title: Schema.NonEmptyString,
-  notes: Schema.String,
+export const CreateHabitInputSchema = z.object({
+  title: NonEmptyStringSchema,
+  notes: z.string(),
   kind: HabitKindSchema,
-  xpReward: Schema.Int.pipe(Schema.greaterThanOrEqualTo(0)),
+  xpReward: NonNegativeIntSchema,
 })
-export type CreateHabitInput = Schema.Schema.Type<typeof CreateHabitInputSchema>
+export type CreateHabitInput = z.infer<typeof CreateHabitInputSchema>
 
-export const SaveCheckInInputSchema = Schema.Struct({
-  dailyIntention: Schema.NonEmptyString,
-  ifThenPlan: Schema.String,
-  cravingIntensity: Schema.NullOr(Schema.Int.pipe(Schema.between(0, 10))),
-  triggerNotes: Schema.String,
-  reflection: Schema.String,
-  slipHappened: Schema.Boolean,
+export const SaveCheckInInputSchema = z.object({
+  dailyIntention: NonEmptyStringSchema,
+  ifThenPlan: z.string(),
+  cravingIntensity: z.int().min(0).max(10).nullable(),
+  triggerNotes: z.string(),
+  reflection: z.string(),
+  slipHappened: z.boolean(),
 })
-export type SaveCheckInInput = Schema.Schema.Type<typeof SaveCheckInInputSchema>
+export type SaveCheckInInput = z.infer<typeof SaveCheckInInputSchema>
 
-export const MutationStatusSchema = Schema.Literal('created', 'updated', 'noop')
-export type MutationStatus = Schema.Schema.Type<typeof MutationStatusSchema>
+export const MutationStatusSchema = z.enum(['created', 'updated', 'noop'])
+export type MutationStatus = z.infer<typeof MutationStatusSchema>
 
-export const MutationResultSchema = Schema.Struct({
+export const MutationResultSchema = z.object({
   status: MutationStatusSchema,
-  message: Schema.NonEmptyString,
+  message: NonEmptyStringSchema,
   dashboard: DashboardPayloadSchema,
 })
-export type MutationResult = Schema.Schema.Type<typeof MutationResultSchema>
-
-export const CoachInsightSchema = Schema.Struct({
-  heading: Schema.NonEmptyString,
-  summary: Schema.NonEmptyString,
-  momentum: Schema.Array(Schema.NonEmptyString),
-  friction: Schema.Array(Schema.NonEmptyString),
-  nextMoves: Schema.Array(Schema.NonEmptyString),
-})
-export type CoachInsight = Schema.Schema.Type<typeof CoachInsightSchema>
-
-export const CoachPromptSchema = Schema.Struct({
-  prompt: Schema.NonEmptyString,
-})
-export type CoachPrompt = Schema.Schema.Type<typeof CoachPromptSchema>
+export type MutationResult = z.infer<typeof MutationResultSchema>

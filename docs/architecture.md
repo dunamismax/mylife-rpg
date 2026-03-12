@@ -12,19 +12,18 @@ QuestLog is deliberately small:
 ## Monorepo Boundaries
 
 - `apps/web` owns the TanStack Start app, route tree, API handlers, and the dashboard UI
-- `packages/contracts` defines the transport and domain contracts with Effect Schema
+- `packages/contracts` defines the transport and domain contracts with Zod
 - `packages/db` owns the Drizzle schema, PostgreSQL client, and generated Better Auth tables
-- `packages/server` contains Effect-powered application services, validation, and session/auth helpers
-- `packages/ai` contains the Mastra coaching workflow plus a deterministic fallback strategy
+- `packages/server` contains application services, validation, and session/auth helpers
 - `packages/telemetry` initializes OpenTelemetry tracing for server-side execution
 
 ## Data Flow
 
 1. The browser reads dashboard state through TanStack Query.
-2. Route handlers call `requireSession()` and then execute Effect services through `runServerEffect()`.
-3. Services validate payloads with Effect Schema, perform Drizzle queries inside PostgreSQL transactions, and return contract-shaped results.
+2. Route handlers call `requireSession()` and then invoke async domain services directly.
+3. Services validate payloads with Zod, perform Drizzle queries inside PostgreSQL transactions, and return contract-shaped results.
 4. Mutations return the refreshed dashboard so the client can merge server truth immediately.
-5. The AI panel uses TanStack AI for live chat and falls back to deterministic coaching text when `OPENAI_API_KEY` is absent.
+5. The coach panel derives guidance directly from the current dashboard state.
 
 ## Persistence Model
 
@@ -40,4 +39,4 @@ QuestLog is deliberately small:
 - PostgreSQL is the system of record
 - OpenTelemetry wraps server calls so mutations and dashboard loads can be traced consistently
 - Biome handles formatting, import organization, and linting
-- Vitest covers the core date/streak rules and fallback coaching behavior
+- Vitest covers the core date/streak rules and dashboard-derived coaching behavior

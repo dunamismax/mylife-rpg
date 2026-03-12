@@ -5,7 +5,6 @@
     "baseUrl": ".",
     "paths": {
       "#/*": ["./src/*"],
-      "@questlog/ai": ["../../packages/ai/src/index.ts"],
       "@questlog/contracts": ["../../packages/contracts/src/index.ts"],
       "@questlog/server": ["../../packages/server/src/index.ts"],
       "@questlog/telemetry": ["../../packages/telemetry/src/index.ts"],

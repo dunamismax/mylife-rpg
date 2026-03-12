@@ -16,7 +16,6 @@ import { Route as ApiHabitsRouteImport } from './routes/api/habits'
 import { Route as ApiDashboardRouteImport } from './routes/api/dashboard'
 import { Route as ApiCheckInsTodayRouteImport } from './routes/api/check-ins/today'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as ApiAiChatRouteImport } from './routes/api/ai/chat'
 import { Route as ApiQuestsQuestIdCompleteRouteImport } from './routes/api/quests/$questId/complete'
 import { Route as ApiHabitsHabitIdLogRouteImport } from './routes/api/habits/$habitId/log'
 
@@ -55,11 +54,6 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiAiChatRoute = ApiAiChatRouteImport.update({
-  id: '/api/ai/chat',
-  path: '/api/ai/chat',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiQuestsQuestIdCompleteRoute =
   ApiQuestsQuestIdCompleteRouteImport.update({
     id: '/$questId/complete',
@@ -78,7 +72,6 @@ export interface FileRoutesByFullPath {
   '/api/dashboard': typeof ApiDashboardRoute
   '/api/habits': typeof ApiHabitsRouteWithChildren
   '/api/quests': typeof ApiQuestsRouteWithChildren
-  '/api/ai/chat': typeof ApiAiChatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/check-ins/today': typeof ApiCheckInsTodayRoute
   '/api/habits/$habitId/log': typeof ApiHabitsHabitIdLogRoute
@@ -90,7 +83,6 @@ export interface FileRoutesByTo {
   '/api/dashboard': typeof ApiDashboardRoute
   '/api/habits': typeof ApiHabitsRouteWithChildren
   '/api/quests': typeof ApiQuestsRouteWithChildren
-  '/api/ai/chat': typeof ApiAiChatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/check-ins/today': typeof ApiCheckInsTodayRoute
   '/api/habits/$habitId/log': typeof ApiHabitsHabitIdLogRoute
@@ -103,7 +95,6 @@ export interface FileRoutesById {
   '/api/dashboard': typeof ApiDashboardRoute
   '/api/habits': typeof ApiHabitsRouteWithChildren
   '/api/quests': typeof ApiQuestsRouteWithChildren
-  '/api/ai/chat': typeof ApiAiChatRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/check-ins/today': typeof ApiCheckInsTodayRoute
   '/api/habits/$habitId/log': typeof ApiHabitsHabitIdLogRoute
@@ -117,7 +108,6 @@ export interface FileRouteTypes {
     | '/api/dashboard'
     | '/api/habits'
     | '/api/quests'
-    | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/check-ins/today'
     | '/api/habits/$habitId/log'
@@ -129,7 +119,6 @@ export interface FileRouteTypes {
     | '/api/dashboard'
     | '/api/habits'
     | '/api/quests'
-    | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/check-ins/today'
     | '/api/habits/$habitId/log'
@@ -141,7 +130,6 @@ export interface FileRouteTypes {
     | '/api/dashboard'
     | '/api/habits'
     | '/api/quests'
-    | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/check-ins/today'
     | '/api/habits/$habitId/log'
@@ -154,7 +142,6 @@ export interface RootRouteChildren {
   ApiDashboardRoute: typeof ApiDashboardRoute
   ApiHabitsRoute: typeof ApiHabitsRouteWithChildren
   ApiQuestsRoute: typeof ApiQuestsRouteWithChildren
-  ApiAiChatRoute: typeof ApiAiChatRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiCheckInsTodayRoute: typeof ApiCheckInsTodayRoute
 }
@@ -210,13 +197,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/ai/chat': {
-      id: '/api/ai/chat'
-      path: '/api/ai/chat'
-      fullPath: '/api/ai/chat'
-      preLoaderRoute: typeof ApiAiChatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/quests/$questId/complete': {
       id: '/api/quests/$questId/complete'
       path: '/$questId/complete'
@@ -264,7 +244,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiDashboardRoute: ApiDashboardRoute,
   ApiHabitsRoute: ApiHabitsRouteWithChildren,
   ApiQuestsRoute: ApiQuestsRouteWithChildren,
-  ApiAiChatRoute: ApiAiChatRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiCheckInsTodayRoute: ApiCheckInsTodayRoute,
 }

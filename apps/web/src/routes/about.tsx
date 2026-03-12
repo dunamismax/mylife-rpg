@@ -23,19 +23,16 @@ function StackPage() {
 
       <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {[
-          ['Runtime', 'Bun execution with pnpm workspace orchestration.'],
+          ['Runtime', 'Bun handles local scripts, installs, and workspaces.'],
           ['App', 'TanStack Start + Router + Query on React 19.'],
-          [
-            'Domain',
-            'Effect-driven server services with Effect Schema contracts.',
-          ],
+          ['Domain', 'Plain async TypeScript services with Zod validation.'],
           [
             'Data',
             'PostgreSQL with Drizzle models and generated Better Auth tables.',
           ],
           [
-            'AI',
-            'TanStack AI chat surface backed by a Mastra coaching workflow.',
+            'Auth',
+            'Better Auth keeps session handling aligned with TanStack Start.',
           ],
           [
             'Ops',

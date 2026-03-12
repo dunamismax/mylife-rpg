@@ -1,6 +1,14 @@
-import type { CoachInsight, DashboardPayload } from '@questlog/contracts'
+import type { DashboardPayload } from '@questlog/contracts'
 
-export const fallbackCoachInsight = (
+export interface CoachInsight {
+  heading: string
+  summary: string
+  momentum: string[]
+  friction: string[]
+  nextMoves: string[]
+}
+
+export const buildCoachInsight = (
   dashboard: DashboardPayload,
 ): CoachInsight => {
   const momentum = dashboard.habits

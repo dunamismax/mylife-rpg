@@ -1,12 +1,11 @@
-import { fallbackCoachInsight } from '@questlog/ai/fallback'
 import type { DashboardPayload, MutationResult } from '@questlog/contracts'
 import { describe, expect, it } from 'vitest'
 import { mergeDashboard } from './api'
+import { buildCoachInsight } from './coach-insight'
 
 const dashboardFixture: DashboardPayload = {
   today: '2026-03-12',
   weekStart: '2026-03-09',
-  aiAvailable: false,
   progress: {
     level: 3,
     totalXp: 240,
@@ -77,9 +76,9 @@ const dashboardFixture: DashboardPayload = {
   todayCheckIn: null,
 }
 
-describe('fallbackCoachInsight', () => {
+describe('buildCoachInsight', () => {
   it('surfaces friction and next moves from the live dashboard shape', () => {
-    const insight = fallbackCoachInsight(dashboardFixture)
+    const insight = buildCoachInsight(dashboardFixture)
 
     expect(insight.heading).toBe('Set the day before it drifts')
     expect(insight.momentum).toContain('Evening walk: streak 5')

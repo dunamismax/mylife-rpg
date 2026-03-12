@@ -15,9 +15,9 @@ Read those files first, then read this repo's `README.md` and the task-relevant 
 
 - Read `README.md` and `BUILD.md` before making major repo changes.
 - Verify changes with the smallest truthful Bun workspace commands:
-  - `pnpm check`
-  - `pnpm test`
-  - `pnpm build`
-- Prefer changes that preserve the current Bun + TanStack Start + Effect + PostgreSQL stack.
+  - `bun run check`
+  - `bun run test`
+  - `bun run build`
+- Prefer changes that preserve the current Bun + TanStack Start + Zod + PostgreSQL stack.
 - No AI attribution in commits. Commit as `dunamismax`.
 - Do not push from this repo unless the task explicitly requires it.

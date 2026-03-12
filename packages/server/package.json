@@ -6,19 +6,16 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "auth:generate": "DATABASE_URL=${DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/questlog} pnpm dlx @better-auth/cli generate --config src/auth.ts --output ../db/src/auth-schema.ts -y",
+    "auth:generate": "DATABASE_URL=${DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/questlog} bunx @better-auth/cli generate --config src/auth.ts --output ../db/src/auth-schema.ts -y",
     "test": "bun --bun vitest run"
   },
   "dependencies": {
-    "@questlog/ai": "workspace:*",
     "@questlog/contracts": "workspace:*",
     "@questlog/db": "workspace:*",
     "@questlog/telemetry": "workspace:*",
-    "@tanstack/ai": "^0.6.0",
-    "@tanstack/ai-openai": "^0.6.0",
     "better-auth": "^1.5.3",
     "drizzle-orm": "^0.45.1",
-    "effect": "^3.19.19"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "pg-mem": "^3.0.14",

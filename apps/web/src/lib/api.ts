@@ -7,19 +7,18 @@ import {
   MutationResultSchema,
   type SaveCheckInInput,
 } from '@questlog/contracts'
-import { Schema } from 'effect'
+import type { ZodType } from 'zod'
 
 type RequestShape = Omit<RequestInit, 'body'> & {
   body?: unknown
 }
 
-const decode = <T>(schema: Schema.Schema<T>, input: unknown) =>
-  Schema.decodeUnknownSync(schema)(input)
+const decode = <T>(schema: ZodType<T>, input: unknown) => schema.parse(input)
 
 const requestJson = async <T>(
   url: string,
   { body, headers, ...init }: RequestShape,
-  schema: Schema.Schema<T>,
+  schema: ZodType<T>,
 ) => {
   const response = await fetch(url, {
     ...init,

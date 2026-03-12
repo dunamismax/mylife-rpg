@@ -18,8 +18,6 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@questlog/ai": ["packages/ai/src/index.ts"],
-      "@questlog/ai/*": ["packages/ai/src/*"],
       "@questlog/contracts": ["packages/contracts/src/index.ts"],
       "@questlog/contracts/*": ["packages/contracts/src/*"],
       "@questlog/db": ["packages/db/src/index.ts"],

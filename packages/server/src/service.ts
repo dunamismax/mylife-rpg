@@ -12,12 +12,13 @@ import {
   CreateQuestInputSchema,
   SaveCheckInInputSchema,
 } from '@questlog/contracts'
-import type { QuestlogDb } from '@questlog/db'
 import {
   dailyCheckIns,
+  getDb,
   habitLogs,
   habits,
   progress,
+  type QuestlogDb,
   quests,
   user,
 } from '@questlog/db'
@@ -33,7 +34,7 @@ import {
   isNull,
   lt,
 } from 'drizzle-orm'
-import { Effect } from 'effect'
+import type { ZodType } from 'zod'
 import {
   addDays,
   currentHabitStreak,
@@ -43,8 +44,7 @@ import {
   toIsoString,
   weekStartKey,
 } from './date'
-import { NotFoundError } from './errors'
-import { Database, decodeUnknown } from './runtime'
+import { NotFoundError, toAppError, ValidationError } from './errors'
 
 const recentActivityLimit = 8
 
@@ -123,6 +123,18 @@ type InferTransaction<TDb> = TDb extends {
 
 type QuestlogTransaction = InferTransaction<QuestlogDb>
 type QuestlogDatabase = QuestlogDb | QuestlogTransaction
+
+const parseInput = <T>(schema: ZodType<T>, input: unknown): T => {
+  const result = schema.safeParse(input)
+
+  if (result.success) {
+    return result.data
+  }
+
+  throw new ValidationError(
+    result.error.issues[0]?.message ?? 'Invalid request payload',
+  )
+}
 
 const readDashboard = async (
   database: QuestlogDatabase,
@@ -219,7 +231,6 @@ const readDashboard = async (
   return {
     today,
     weekStart,
-    aiAvailable: Boolean(process.env.OPENAI_API_KEY),
     progress: progressSnapshot,
     summary: {
       openQuests: openQuestCount[0]?.value ?? 0,
@@ -277,48 +288,37 @@ const runWithTrace = <T>(
   userId: string,
   run: (database: QuestlogDatabase) => Promise<T>,
 ) =>
-  Effect.gen(function* () {
-    const database = yield* Database
-
-    return yield* Effect.tryPromise({
-      try: () => traceAsync(name, { userId }, () => run(database)),
-      catch: (error) =>
-        error instanceof Error ? error : new Error('Unknown server error'),
-    })
+  traceAsync(name, { userId }, () => run(getDb())).catch((error) => {
+    throw toAppError(error)
   })
 
-export const loadDashboard = (userId: string, today = todayKey()) =>
+export const loadDashboard = async (userId: string, today = todayKey()) =>
   runWithTrace('questlog.dashboard.load', userId, (database) =>
     readDashboard(database, userId, today),
   )
 
-export const createQuest = (userId: string, input: unknown) =>
-  Effect.gen(function* () {
-    const payload = yield* decodeUnknown(CreateQuestInputSchema, input)
+export const createQuest = async (userId: string, input: unknown) => {
+  const payload = parseInput(CreateQuestInputSchema, input)
 
-    return yield* runWithTrace(
-      'questlog.quest.create',
+  return runWithTrace('questlog.quest.create', userId, async (database) => {
+    await database.insert(quests).values({
       userId,
-      async (database) => {
-        await database.insert(quests).values({
-          userId,
-          title: payload.title.trim(),
-          notes: payload.notes.trim(),
-          difficulty: payload.difficulty,
-          dueDate: payload.dueDate,
-          xpReward: payload.xpReward,
-        })
+      title: payload.title.trim(),
+      notes: payload.notes.trim(),
+      difficulty: payload.difficulty,
+      dueDate: payload.dueDate,
+      xpReward: payload.xpReward,
+    })
 
-        const dashboard = await readDashboard(database, userId)
+    const dashboard = await readDashboard(database, userId)
 
-        return {
-          status: 'created',
-          message: 'Quest created.',
-          dashboard,
-        } satisfies MutationResult
-      },
-    )
+    return {
+      status: 'created',
+      message: 'Quest created.',
+      dashboard,
+    } satisfies MutationResult
   })
+}
 
 export const completeQuest = (userId: string, questId: string) =>
   runWithTrace('questlog.quest.complete', userId, async (database) =>
@@ -367,30 +367,25 @@ export const completeQuest = (userId: string, questId: string) =>
     }),
   )
 
-export const createHabit = (userId: string, input: unknown) =>
-  Effect.gen(function* () {
-    const payload = yield* decodeUnknown(CreateHabitInputSchema, input)
+export const createHabit = async (userId: string, input: unknown) => {
+  const payload = parseInput(CreateHabitInputSchema, input)
 
-    return yield* runWithTrace(
-      'questlog.habit.create',
+  return runWithTrace('questlog.habit.create', userId, async (database) => {
+    await database.insert(habits).values({
       userId,
-      async (database) => {
-        await database.insert(habits).values({
-          userId,
-          title: payload.title.trim(),
-          notes: payload.notes.trim(),
-          kind: payload.kind,
-          xpReward: payload.xpReward,
-        })
+      title: payload.title.trim(),
+      notes: payload.notes.trim(),
+      kind: payload.kind,
+      xpReward: payload.xpReward,
+    })
 
-        return {
-          status: 'created',
-          message: 'Habit created.',
-          dashboard: await readDashboard(database, userId),
-        } satisfies MutationResult
-      },
-    )
+    return {
+      status: 'created',
+      message: 'Habit created.',
+      dashboard: await readDashboard(database, userId),
+    } satisfies MutationResult
   })
+}
 
 export const logHabit = (
   userId: string,
@@ -453,59 +448,55 @@ export const logHabit = (
     }),
   )
 
-export const saveCheckIn = (
+export const saveCheckIn = async (
   userId: string,
   input: unknown,
   checkInDate = todayKey(),
-) =>
-  Effect.gen(function* () {
-    const payload = yield* decodeUnknown(SaveCheckInInputSchema, input)
+) => {
+  const payload = parseInput(SaveCheckInInputSchema, input)
 
-    return yield* runWithTrace(
-      'questlog.checkin.save',
-      userId,
-      async (database) =>
-        database.transaction(async (tx) => {
-          const existing = await tx.query.dailyCheckIns.findFirst({
-            where: and(
-              eq(dailyCheckIns.userId, userId),
-              eq(dailyCheckIns.checkInDate, checkInDate),
-            ),
-          })
+  return runWithTrace('questlog.checkin.save', userId, async (database) =>
+    database.transaction(async (tx) => {
+      const existing = await tx.query.dailyCheckIns.findFirst({
+        where: and(
+          eq(dailyCheckIns.userId, userId),
+          eq(dailyCheckIns.checkInDate, checkInDate),
+        ),
+      })
 
-          await tx
-            .insert(dailyCheckIns)
-            .values({
-              userId,
-              checkInDate,
-              dailyIntention: payload.dailyIntention.trim(),
-              ifThenPlan: payload.ifThenPlan.trim(),
-              cravingIntensity: payload.cravingIntensity,
-              triggerNotes: payload.triggerNotes.trim(),
-              reflection: payload.reflection.trim(),
-              slipHappened: payload.slipHappened,
-            })
-            .onConflictDoUpdate({
-              target: [dailyCheckIns.userId, dailyCheckIns.checkInDate],
-              set: {
-                dailyIntention: payload.dailyIntention.trim(),
-                ifThenPlan: payload.ifThenPlan.trim(),
-                cravingIntensity: payload.cravingIntensity,
-                triggerNotes: payload.triggerNotes.trim(),
-                reflection: payload.reflection.trim(),
-                slipHappened: payload.slipHappened,
-                updatedAt: new Date(),
-              },
-            })
+      await tx
+        .insert(dailyCheckIns)
+        .values({
+          userId,
+          checkInDate,
+          dailyIntention: payload.dailyIntention.trim(),
+          ifThenPlan: payload.ifThenPlan.trim(),
+          cravingIntensity: payload.cravingIntensity,
+          triggerNotes: payload.triggerNotes.trim(),
+          reflection: payload.reflection.trim(),
+          slipHappened: payload.slipHappened,
+        })
+        .onConflictDoUpdate({
+          target: [dailyCheckIns.userId, dailyCheckIns.checkInDate],
+          set: {
+            dailyIntention: payload.dailyIntention.trim(),
+            ifThenPlan: payload.ifThenPlan.trim(),
+            cravingIntensity: payload.cravingIntensity,
+            triggerNotes: payload.triggerNotes.trim(),
+            reflection: payload.reflection.trim(),
+            slipHappened: payload.slipHappened,
+            updatedAt: new Date(),
+          },
+        })
 
-          return {
-            status: existing ? 'updated' : 'created',
-            message: "Today's check-in was saved.",
-            dashboard: await readDashboard(tx, userId, checkInDate),
-          } satisfies MutationResult
-        }),
-    )
-  })
+      return {
+        status: existing ? 'updated' : 'created',
+        message: "Today's check-in was saved.",
+        dashboard: await readDashboard(tx, userId, checkInDate),
+      } satisfies MutationResult
+    }),
+  )
+}
 
 export const lookupUserByEmail = (email: string) =>
   runWithTrace('questlog.user.lookup', email, async (database) => {

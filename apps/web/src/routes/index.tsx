@@ -1,4 +1,3 @@
-import { fallbackCoachInsight } from '@questlog/ai/fallback'
 import type {
   CreateHabitInput,
   CreateQuestInput,
@@ -10,13 +9,11 @@ import type {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import {
-  Bot,
   CheckCircle2,
   Flame,
   LoaderCircle,
   Logs,
   Plus,
-  Send,
   ShieldAlert,
   Sparkles,
   Target,
@@ -27,7 +24,6 @@ import {
   useEffect,
   useEffectEvent,
   useMemo,
-  useRef,
   useState,
 } from 'react'
 import {
@@ -40,7 +36,7 @@ import {
   saveCheckInRequest,
 } from '#/lib/api'
 import { authClient } from '#/lib/auth-client'
-import { type CoachMessages, useCoachChat } from '#/lib/coach-chat'
+import { buildCoachInsight } from '#/lib/coach-insight'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -92,28 +88,6 @@ function formatTimestamp(value: string | null) {
     hour: 'numeric',
     minute: '2-digit',
   }).format(new Date(value))
-}
-
-function renderMessageText(message: CoachMessages[number]) {
-  const seenParts = new Map<string, number>()
-
-  return message.parts.flatMap((part) => {
-    if (part.type !== 'text' || !part.content) {
-      return []
-    }
-
-    const occurrence = (seenParts.get(part.content) ?? 0) + 1
-    seenParts.set(part.content, occurrence)
-
-    return (
-      <p
-        key={`${message.id}-${occurrence}-${part.content}`}
-        className="break-words whitespace-pre-wrap text-sm leading-7 text-inherit"
-      >
-        {part.content}
-      </p>
-    )
-  })
 }
 
 function AuthPanel({ onSuccess }: { onSuccess: (message: string) => void }) {
@@ -250,34 +224,20 @@ function AuthPanel({ onSuccess }: { onSuccess: (message: string) => void }) {
 }
 
 function CoachPanel({ dashboard }: { dashboard: DashboardPayload }) {
-  const insight = useMemo(() => fallbackCoachInsight(dashboard), [dashboard])
-  const [input, setInput] = useState('')
-  const { messages, sendMessage, isLoading, stop } = useCoachChat()
-  const listRef = useRef<HTMLDivElement>(null)
-  const scrollToBottom = useEffectEvent(() => {
-    if (listRef.current) {
-      listRef.current.scrollTop = listRef.current.scrollHeight
-    }
-  })
-
-  useEffect(() => {
-    if (messages.length > 0) {
-      scrollToBottom()
-    }
-  }, [messages])
+  const insight = useMemo(() => buildCoachInsight(dashboard), [dashboard])
 
   return (
     <section className="panel grid h-full gap-5 rounded-[2rem] px-5 py-5">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="kicker mb-2">AI coach</p>
+          <p className="kicker mb-2">Coach snapshot</p>
           <h3 className="text-xl font-semibold tracking-[-0.05em] text-[color:var(--ink)]">
             {insight.heading}
           </h3>
         </div>
         <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] bg-[color:rgba(255,249,236,0.72)] px-3 py-1 text-xs font-semibold text-[color:var(--muted)]">
-          <Bot className="h-3.5 w-3.5" />
-          {dashboard.aiAvailable ? 'Live chat ready' : 'Fallback mode'}
+          <Sparkles className="h-3.5 w-3.5" />
+          Live board-derived guidance
         </div>
       </div>
 
@@ -313,84 +273,14 @@ function CoachPanel({ dashboard }: { dashboard: DashboardPayload }) {
         </div>
       </div>
 
-      <div
-        ref={listRef}
-        className="grid min-h-[16rem] flex-1 content-start gap-3 overflow-y-auto rounded-[1.4rem] border border-[color:var(--line)] bg-[color:rgba(30,37,28,0.04)] px-3 py-3"
-      >
-        {messages.length === 0 ? (
-          <p className="px-2 py-2 text-sm text-[color:var(--muted)]">
-            Ask for a sharper plan, a habit reset, or help turning a vague quest
-            into the next concrete action.
-          </p>
-        ) : (
-          messages.map((message) => (
-            <article
-              key={message.id}
-              className={`max-w-[95%] rounded-[1.2rem] px-4 py-3 ${
-                message.role === 'assistant'
-                  ? 'border border-[color:var(--line)] bg-[color:var(--surface-raised)]'
-                  : 'ml-auto bg-[color:var(--ink)] text-[color:var(--paper)]'
-              }`}
-            >
-              {renderMessageText(message)}
-            </article>
-          ))
-        )}
-      </div>
-
-      <form
-        className="grid gap-3"
-        onSubmit={(event) => {
-          event.preventDefault()
-          if (!input.trim() || !dashboard.aiAvailable) {
-            return
-          }
-
-          sendMessage(input)
-          setInput('')
-        }}
-      >
-        <label className="field">
-          <span className="field-label">Coach prompt</span>
-          <textarea
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            placeholder={
-              dashboard.aiAvailable
-                ? 'Where is the sharpest next move today?'
-                : 'Add OPENAI_API_KEY to enable live chat.'
-            }
-            rows={3}
-            disabled={!dashboard.aiAvailable || isLoading}
-          />
-        </label>
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-sm text-[color:var(--muted)]">
-            {dashboard.aiAvailable
-              ? 'Live responses stream through TanStack AI.'
-              : 'The fallback insight above still uses your live dashboard state.'}
-          </p>
-          <div className="flex gap-2">
-            {isLoading ? (
-              <button
-                type="button"
-                className="button-secondary"
-                onClick={() => stop()}
-              >
-                Stop
-              </button>
-            ) : null}
-            <button
-              type="submit"
-              className="button-primary"
-              disabled={!dashboard.aiAvailable || !input.trim() || isLoading}
-            >
-              <Send className="h-4 w-4" />
-              Ask coach
-            </button>
-          </div>
-        </div>
-      </form>
+      <section className="rounded-[1.4rem] border border-[color:var(--line)] bg-[color:rgba(30,37,28,0.04)] px-4 py-4">
+        <p className="field-label mb-2">How to use this</p>
+        <p className="text-sm leading-7 text-[color:var(--muted)]">
+          This panel is generated from your quests, habits, and today&apos;s
+          check-in. Use it to trim scope, protect a streak, and pick the
+          smallest concrete move worth doing next.
+        </p>
+      </section>
     </section>
   )
 }
@@ -1056,16 +946,16 @@ function HomePage() {
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {[
               [
-                'Bun + pnpm',
-                'Workspace execution with a lean TypeScript runtime.',
+                'Bun workspace',
+                'One runtime and package manager across the monorepo.',
               ],
               [
-                'Effect + Drizzle',
-                'Contracts and server behavior stay typed end-to-end.',
+                'Zod + Drizzle',
+                'Validation and persistence stay typed without extra runtime layers.',
               ],
               [
-                'TanStack AI + Mastra',
-                'Live coaching sits next to the actual journal state.',
+                'Better Auth + Query',
+                'Auth, routing, and dashboard state stay focused on the journal.',
               ],
             ].map(([title, copy]) => (
               <article

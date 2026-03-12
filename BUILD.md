@@ -5,10 +5,10 @@
 Run the full workspace verification from the repo root:
 
 ```bash
-pnpm install
-pnpm check
-pnpm test
-pnpm build
+bun install
+bun run check
+bun run test
+bun run build
 ```
 
 ## Database Setup
@@ -22,12 +22,11 @@ docker run --name questlog-postgres \
   -e POSTGRES_DB=questlog \
   -p 5432:5432 \
   -d postgres:17
-pnpm db:push
+bun run db:push
 ```
 
 ## Runtime Notes
 
 - The web app runs on `http://127.0.0.1:3000`.
 - Better Auth tables are committed in `packages/db/src/auth-schema.ts`.
-- If the auth config changes, regenerate those tables with `pnpm auth:generate`.
-- AI chat requires `OPENAI_API_KEY`; otherwise the fallback coach remains available.
+- If the auth config changes, regenerate those tables with `bun run auth:generate`.

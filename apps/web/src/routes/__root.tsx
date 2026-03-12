@@ -32,7 +32,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       {
         name: 'description',
         content:
-          'A grounded quest journal rebuilt on Bun, TanStack Start, Effect, Drizzle, Better Auth, and TanStack AI.',
+          'A grounded quest journal rebuilt on Bun, TanStack Start, Zod, Drizzle, Better Auth, and OpenTelemetry.',
       },
     ],
     links: [

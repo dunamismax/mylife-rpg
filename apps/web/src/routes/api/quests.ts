@@ -1,4 +1,4 @@
-import { createQuest, requireSession, runServerEffect } from '@questlog/server'
+import { createQuest, requireSession } from '@questlog/server'
 import { createFileRoute } from '@tanstack/react-router'
 import { json } from '@tanstack/react-start'
 import { toErrorResponse } from '#/lib/server-response'
@@ -10,9 +10,7 @@ export const Route = createFileRoute('/api/quests')({
         try {
           const session = await requireSession(request)
           const body = await request.json()
-          const result = await runServerEffect(
-            createQuest(session.user.id, body),
-          )
+          const result = await createQuest(session.user.id, body)
           return json(result)
         } catch (error) {
           return toErrorResponse(error)
